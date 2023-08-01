@@ -7,10 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Hopfen extends Lagerbestand{
+public class Hopfen extends Lagerbestand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

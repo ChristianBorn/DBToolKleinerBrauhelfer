@@ -13,8 +13,8 @@ public class Geraete {
     private long id;
     @Column(name = "bezeichnung")
     private String bezeichnung;
-//    @Column(name = "ausruestunganlagenid")
+    //    @Column(name = "ausruestunganlagenid")
     @ManyToOne(targetEntity = Ausruestung.class)
-    @JoinColumn(name = "ausruestunganlagenid", referencedColumnName="id", nullable=false)
+    @JoinColumn(name = "ausruestunganlagenid", referencedColumnName = "id", nullable = false)
     private Ausruestung ausruestungAnlagenId;
 }
