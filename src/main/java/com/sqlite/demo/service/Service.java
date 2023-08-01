@@ -3,10 +3,12 @@ package com.sqlite.demo.service;
 
 import com.sqlite.demo.model.Ausruestung;
 import com.sqlite.demo.model.Geraete;
-import com.sqlite.demo.model.Hefe;
+import com.sqlite.demo.model.lager.Hefe;
+import com.sqlite.demo.model.lager.Hopfen;
 import com.sqlite.demo.repository.AusruestungRepository;
 import com.sqlite.demo.repository.GeraeteRepository;
 import com.sqlite.demo.repository.HefeRepository;
+import com.sqlite.demo.repository.HopfenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -20,6 +22,8 @@ public class Service {
     private AusruestungRepository ausruestungRepository;
     @Autowired
     private HefeRepository hefeRepository;
+    @Autowired
+    private HopfenRepository hopfenRepository;
 
     public List<Geraete> getGeraete() {
         return StreamSupport.stream(geraeteRepository.findAll().spliterator(), false)
@@ -38,5 +42,13 @@ public class Service {
 
     public Float getWertHefe() {
         return hefeRepository.findPricesOfStockedItems();
+    }
+
+    public List<Hopfen> getHopfen() {
+        return StreamSupport.stream(hopfenRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
+    public Float getWertHopfen() {
+        return hopfenRepository.findPricesOfStockedItems();
     }
 }

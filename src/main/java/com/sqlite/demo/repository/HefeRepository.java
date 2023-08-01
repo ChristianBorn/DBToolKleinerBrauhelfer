@@ -1,7 +1,7 @@
 package com.sqlite.demo.repository;
 
 
-import com.sqlite.demo.model.Hefe;
+import com.sqlite.demo.model.lager.Hefe;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

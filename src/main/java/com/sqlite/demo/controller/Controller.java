@@ -2,7 +2,8 @@ package com.sqlite.demo.controller;
 
 import com.sqlite.demo.model.Ausruestung;
 import com.sqlite.demo.model.Geraete;
-import com.sqlite.demo.model.Hefe;
+import com.sqlite.demo.model.lager.Hefe;
+import com.sqlite.demo.model.lager.Hopfen;
 import com.sqlite.demo.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,5 +33,13 @@ public class Controller {
     @GetMapping("/hefe/wert")
     public Float getWertHefe() {
         return service.getWertHefe();
+    }
+    @GetMapping("/hopfen")
+    public List<Hopfen> getHopfen() {
+        return service.getHopfen();
+    }
+    @GetMapping("/hopfen/wert")
+    public Float getWertHopfen() {
+        return service.getWertHopfen();
     }
 }

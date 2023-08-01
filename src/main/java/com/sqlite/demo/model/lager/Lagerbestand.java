@@ -1,4 +1,4 @@
-package com.sqlite.demo.model;
+package com.sqlite.demo.model.lager;
 
 import lombok.Data;
 
