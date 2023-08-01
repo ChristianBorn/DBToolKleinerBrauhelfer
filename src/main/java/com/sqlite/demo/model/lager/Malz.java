@@ -16,6 +16,6 @@ public class Malz extends Lagerbestand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name = super.getName();
-    private int menge = super.getMenge();
+    private float menge = super.getMenge();
     private float preis = super.getPreis();
 }

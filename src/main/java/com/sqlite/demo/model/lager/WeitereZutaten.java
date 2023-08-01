@@ -15,6 +15,6 @@ public class WeitereZutaten extends Lagerbestand {
     @Column(columnDefinition = "integer default 0")
     private Integer einheit;
     private String name = super.getName();
-    private int menge = super.getMenge();
+    private float menge = super.getMenge();
     private float preis = super.getPreis();
 }

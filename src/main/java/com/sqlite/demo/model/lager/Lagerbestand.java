@@ -10,7 +10,7 @@ public abstract class Lagerbestand {
     private String name;
 
     @Column(columnDefinition = "integer default 0")
-    private int menge;
+    private float menge;
 
     @Column(columnDefinition = "real default 0")
     private float preis;

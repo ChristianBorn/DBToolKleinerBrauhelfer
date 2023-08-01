@@ -8,6 +8,8 @@ import com.sqlite.demo.model.lager.Malz;
 import com.sqlite.demo.model.lager.WeitereZutaten;
 import com.sqlite.demo.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,5 +65,13 @@ public class Controller {
     @GetMapping("/weitere-zutaten")
     public List<WeitereZutaten> getWeitereZutaten() {
         return service.getWeitereZutaten();
+    }@GetMapping("/weitere-zutaten/wert")
+    public ResponseEntity<Object> getWertWeitereZutaten() {
+        try {
+            return new ResponseEntity<>(service.getWertWeitereZutaten(), HttpStatus.OK);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
