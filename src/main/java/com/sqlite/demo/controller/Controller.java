@@ -65,7 +65,8 @@ public class Controller {
     @GetMapping("/weitere-zutaten")
     public List<WeitereZutaten> getWeitereZutaten() {
         return service.getWeitereZutaten();
-    }@GetMapping("/weitere-zutaten/wert")
+    }
+    @GetMapping("/weitere-zutaten/wert")
     public ResponseEntity<Object> getWertWeitereZutaten() {
         try {
             return new ResponseEntity<>(service.getWertWeitereZutaten(), HttpStatus.OK);
@@ -73,5 +74,9 @@ public class Controller {
         catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping("/lager/wert")
+    public Float getWertLager() {
+        return service.getWertLager();
     }
 }

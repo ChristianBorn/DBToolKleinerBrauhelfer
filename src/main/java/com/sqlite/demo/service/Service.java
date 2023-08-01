@@ -73,21 +73,34 @@ public class Service {
     public Float getWertWeitereZutaten() throws IllegalArgumentException {
         List<WeitereZutaten> retrievedItems = StreamSupport.stream(weitereZutatenRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
-        List<Float> pricePerRecord = retrievedItems.stream().map(singleRecord -> {
-            if (singleRecord.getEinheit() == 0 || singleRecord.getEinheit() == 3) {
-                return singleRecord.getMenge() * singleRecord.getPreis();
-            }
-            else if (singleRecord.getEinheit() == 1) {
-                return singleRecord.getMenge() * (singleRecord.getPreis() / 1000);
-            }
-            else if (singleRecord.getEinheit() == 2) {
-                return null;
-            }
-            else {
-                throw new IllegalArgumentException("Einheitentyp nicht bekannt: " + singleRecord.getEinheit());
-            }
-        })
-                .collect(Collectors.toList());
-        return pricePerRecord.stream().reduce(0.0f, Float::sum);
+        return calculateValueWeitereZutaten(retrievedItems);
+    }
+
+
+
+    // Util Functions
+    private Float calculateValueWeitereZutaten(List<WeitereZutaten> listOfPrices) {
+        return listOfPrices.stream().map(singleRecord -> {
+                    if (singleRecord.getEinheit() == 0 || singleRecord.getEinheit() == 3) {
+                        return singleRecord.getMenge() * singleRecord.getPreis();
+                    }
+                    else if (singleRecord.getEinheit() == 1) {
+                        return singleRecord.getMenge() * (singleRecord.getPreis() / 1000);
+                    }
+                    else if (singleRecord.getEinheit() == 2) {
+                        return null;
+                    }
+                    else {
+                        throw new IllegalArgumentException("Einheitentyp nicht bekannt: " + singleRecord.getEinheit());
+                    }
+                })
+                .reduce(0.0f, Float::sum);
+    }
+
+    public Float getWertLager() {
+        return hefeRepository.findPricesOfStockedItems() +
+                malzRepository.findPricesOfStockedItems() +
+                hopfenRepository.findPricesOfStockedItems() +
+                getWertWeitereZutaten();
     }
 }
