@@ -37,6 +37,6 @@ public class Service {
     }
 
     public Float getWertHefe() {
-        return hefeRepository.findPricesOfStockedItems().stream().reduce(0.0F, Float::sum);
+        return hefeRepository.findPricesOfStockedItems();
     }
 }
