@@ -1,12 +1,10 @@
 package com.sqlite.demo.controller;
 
-import com.sqlite.demo.model.Ausruestung;
-import com.sqlite.demo.model.Geraete;
 import com.sqlite.demo.model.lager.Hefe;
 import com.sqlite.demo.model.lager.Hopfen;
 import com.sqlite.demo.model.lager.Malz;
 import com.sqlite.demo.model.lager.WeitereZutaten;
-import com.sqlite.demo.service.Service;
+import com.sqlite.demo.service.LagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,65 +16,56 @@ import java.util.List;
 
 @RestController
 @RequestMapping
-public class Controller {
+public class LagerController {
     @Autowired
-    private Service service;
-
-    @GetMapping("/geraete")
-    public List<Geraete> getGeraete() {
-        return service.getGeraete();
-    }
-
-    @GetMapping("/ausruestung")
-    public List<Ausruestung> getAusruestung() {
-        return service.getAusruestung();
-    }
+    private LagerService lagerService;
 
     @GetMapping("/hefe")
     public List<Hefe> getHefe() {
-        return service.getHefe();
+        return lagerService.getHefe();
     }
 
     @GetMapping("/hefe/wert")
     public Float getWertHefe() {
-        return service.getWertHefe();
+        return lagerService.getWertHefe();
     }
 
     @GetMapping("/hopfen")
     public List<Hopfen> getHopfen() {
-        return service.getHopfen();
+        return lagerService.getHopfen();
     }
 
     @GetMapping("/hopfen/wert")
     public Float getWertHopfen() {
-        return service.getWertHopfen();
+        return lagerService.getWertHopfen();
     }
 
     @GetMapping("/malz")
     public List<Malz> getMalz() {
-        return service.getMalz();
+        return lagerService.getMalz();
     }
 
     @GetMapping("/malz/wert")
     public Float getWertMalz() {
-        return service.getWertMalz();
+        return lagerService.getWertMalz();
     }
 
     @GetMapping("/weitere-zutaten")
     public List<WeitereZutaten> getWeitereZutaten() {
-        return service.getWeitereZutaten();
+        return lagerService.getWeitereZutaten();
     }
+
     @GetMapping("/weitere-zutaten/wert")
     public ResponseEntity<Object> getWertWeitereZutaten() {
         try {
-            return new ResponseEntity<>(service.getWertWeitereZutaten(), HttpStatus.OK);
-        }
-        catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(lagerService.getWertWeitereZutaten(), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/lager/wert")
     public Float getWertLager() {
-        return service.getWertLager();
+        return lagerService.getWertLager();
     }
 }

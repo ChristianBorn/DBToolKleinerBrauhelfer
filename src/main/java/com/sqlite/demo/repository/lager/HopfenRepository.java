@@ -1,4 +1,4 @@
-package com.sqlite.demo.repository;
+package com.sqlite.demo.repository.lager;
 
 
 import com.sqlite.demo.model.lager.Hopfen;

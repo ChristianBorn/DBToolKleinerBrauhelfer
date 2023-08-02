@@ -1,7 +1,7 @@
-package com.sqlite.demo.repository;
+package com.sqlite.demo.repository.ausruestung;
 
 
-import com.sqlite.demo.model.Geraete;
+import com.sqlite.demo.model.ausruestung.Geraete;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
