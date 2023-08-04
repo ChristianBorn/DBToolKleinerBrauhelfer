@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HefeRepository extends CrudRepository<Hefe, Long> {
-    @Query("SELECT SUM(menge*preis) FROM Hefe WHERE menge>0")
+    @Query("SELECT SUM(menge*preis) FROM Hefe WHERE menge>600")
     Float findPricesOfStockedItems();
 }

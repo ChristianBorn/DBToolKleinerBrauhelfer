@@ -26,8 +26,8 @@ public class LagerController {
     }
 
     @GetMapping("/hefe/wert")
-    public Float getWertHefe() {
-        return lagerService.getWertHefe();
+    public ResponseEntity<Object> getWertHefe() {
+        return new ResponseEntity<>(lagerService.getWertHefe(), HttpStatus.OK);
     }
 
     @GetMapping("/hopfen")
@@ -36,8 +36,8 @@ public class LagerController {
     }
 
     @GetMapping("/hopfen/wert")
-    public Float getWertHopfen() {
-        return lagerService.getWertHopfen();
+    public ResponseEntity<Object> getWertHopfen() {
+        return new ResponseEntity<>(lagerService.getWertHopfen(), HttpStatus.OK);
     }
 
     @GetMapping("/malz")
@@ -46,8 +46,8 @@ public class LagerController {
     }
 
     @GetMapping("/malz/wert")
-    public Float getWertMalz() {
-        return lagerService.getWertMalz();
+    public ResponseEntity<Object> getWertMalz() {
+        return new ResponseEntity<>(lagerService.getWertMalz(), HttpStatus.OK);
     }
 
     @GetMapping("/weitere-zutaten")

@@ -9,13 +9,16 @@ import com.sqlite.demo.repository.lager.HefeRepository;
 import com.sqlite.demo.repository.lager.HopfenRepository;
 import com.sqlite.demo.repository.lager.MalzRepository;
 import com.sqlite.demo.repository.lager.WeitereZutatenRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @org.springframework.stereotype.Service
+@AllArgsConstructor
 public class LagerService {
     @Autowired
     private HefeRepository hefeRepository;
@@ -32,7 +35,8 @@ public class LagerService {
     }
 
     public Float getWertHefe() {
-        return hefeRepository.findPricesOfStockedItems();
+        Float result = hefeRepository.findPricesOfStockedItems();
+        return Objects.requireNonNullElse(result, 0.0f);
     }
 
     public List<Hopfen> getHopfen() {
@@ -41,7 +45,8 @@ public class LagerService {
     }
 
     public Float getWertHopfen() {
-        return hopfenRepository.findPricesOfStockedItems();
+        Float result = hopfenRepository.findPricesOfStockedItems();
+        return Objects.requireNonNullElse(result, 0.0f);
     }
 
     public List<Malz> getMalz() {
@@ -50,7 +55,8 @@ public class LagerService {
     }
 
     public Float getWertMalz() {
-        return malzRepository.findPricesOfStockedItems();
+        Float result = malzRepository.findPricesOfStockedItems();
+        return Objects.requireNonNullElse(result, 0.0f);
     }
 
     public List<WeitereZutaten> getWeitereZutaten() {
@@ -61,6 +67,9 @@ public class LagerService {
     public Float getWertWeitereZutaten() throws IllegalArgumentException {
         List<WeitereZutaten> retrievedItems = StreamSupport.stream(weitereZutatenRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+        if (retrievedItems.isEmpty()) {
+            return 0.0f;
+        }
         return calculateValueWeitereZutaten(retrievedItems);
     }
 
@@ -72,19 +81,24 @@ public class LagerService {
                         return singleRecord.getMenge() * singleRecord.getPreis();
                     } else if (singleRecord.getEinheit() == 1) {
                         return singleRecord.getMenge() * (singleRecord.getPreis() / 1000);
-                    } else if (singleRecord.getEinheit() == 2) {
-                        return null;
                     } else {
-                        throw new IllegalArgumentException("Einheitentyp nicht bekannt: " + singleRecord.getEinheit());
+                        throw new IllegalArgumentException("Einheitentyp nicht bekannt: " + singleRecord.getEinheit() +
+                                "in Tabelle 'WeitereZutaten'");
                     }
                 })
                 .reduce(0.0f, Float::sum);
     }
 
     public Float getWertLager() {
-        return hefeRepository.findPricesOfStockedItems() +
-                malzRepository.findPricesOfStockedItems() +
-                hopfenRepository.findPricesOfStockedItems() +
-                getWertWeitereZutaten();
+        Float wertWeitereZutaten;
+        try {
+            wertWeitereZutaten = getWertWeitereZutaten();
+        } catch (IllegalArgumentException e) {
+            wertWeitereZutaten = 0.0f;
+        }
+        return getWertHefe() +
+                getWertMalz() +
+                getWertHopfen() +
+                wertWeitereZutaten;
     }
 }
