@@ -1,4 +1,4 @@
-package com.sqlite.demo.service;
+package com.sqlite.demo.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

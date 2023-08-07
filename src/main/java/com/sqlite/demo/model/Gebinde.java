@@ -1,6 +1,9 @@
 package com.sqlite.demo.model;
 
+
+
 import lombok.Data;
+
 
 import javax.persistence.*;
 
@@ -18,8 +21,17 @@ public class Gebinde {
     private Integer anzahl;
 
     @Column(columnDefinition = "real default 0 not null")
-    private Float fassungsvermögen;
+    private Float fassungsvermoegen;
 
     @Column
     private String status;
+
+    public Gebinde(String name, Integer anzahl, Float fassungsvermoegen, String status) {
+        this.name = name;
+        this.anzahl = anzahl;
+        this.fassungsvermoegen = fassungsvermoegen;
+        this.status = status;
+    }
+
+    public Gebinde() {}
 }

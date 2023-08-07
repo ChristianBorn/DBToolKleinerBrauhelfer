@@ -16,4 +16,3 @@ public enum GebindeStatus {
         return displayName;
     }
 }
-
