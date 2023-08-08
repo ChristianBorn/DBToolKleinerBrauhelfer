@@ -1,7 +1,7 @@
 package com.sqlite.demo.controller;
 
 import com.sqlite.demo.model.ausruestung.Ausruestung;
-import com.sqlite.demo.model.ausruestung.Geraete;
+import com.sqlite.demo.model.ausruestung.Geraet;
 import com.sqlite.demo.service.AusruestungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class AusruestungController {
     private AusruestungService ausruestungService;
 
     @GetMapping("/geraete")
-    public List<Geraete> getGeraete() {
+    public List<Geraet> getGeraete() {
         return ausruestungService.getGeraete();
     }
 

@@ -5,15 +5,15 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "geraete")
 @Data
-public class Geraete {
+public class Geraet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "bezeichnung")
     private String bezeichnung;
-    //    @Column(name = "ausruestunganlagenid")
+
     @ManyToOne(targetEntity = Ausruestung.class)
     @JoinColumn(name = "ausruestunganlagenid", referencedColumnName = "id", nullable = false)
     private Ausruestung ausruestungAnlagenId;
