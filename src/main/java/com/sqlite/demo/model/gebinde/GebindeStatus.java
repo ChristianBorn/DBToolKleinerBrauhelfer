@@ -3,8 +3,8 @@ package com.sqlite.demo.model.gebinde;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum GebindeStatus {
-    LEER("Leer"),
-    VOLL("Voll");
+    LEER("leer"),
+    VOLL("voll");
     private final String displayName;
 
     GebindeStatus(String displayName) {

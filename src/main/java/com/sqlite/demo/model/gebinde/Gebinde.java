@@ -24,9 +24,9 @@ public class Gebinde {
     private Float fassungsvermoegen;
 
     @Column
-    private GebindeStatus status;
+    private String status;
 
-    public Gebinde(String name, Integer anzahl, Float fassungsvermoegen, GebindeStatus status) {
+    public Gebinde(String name, Integer anzahl, Float fassungsvermoegen, String status) {
         this.name = name;
         this.anzahl = anzahl;
         this.fassungsvermoegen = fassungsvermoegen;

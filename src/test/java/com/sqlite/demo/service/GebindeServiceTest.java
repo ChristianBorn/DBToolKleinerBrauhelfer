@@ -6,6 +6,8 @@ import com.sqlite.demo.model.gebinde.GebindeStatus;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -23,11 +25,40 @@ class GebindeServiceTest {
                 transmittedGebinde.getName(),
                 transmittedGebinde.getAnzahl(),
                 transmittedGebinde.getFassungsvermoegen(),
-                transmittedGebinde.getStatus());
+                transmittedGebinde.getStatus().getDisplayName());
         when(gebindeRepository.save(gebindeToSave)).thenReturn(gebindeToSave);
 
         Gebinde expected = gebindeToSave;
         Gebinde actual = gebindeService.saveNewGebinde(transmittedGebinde);
+
+        assertEquals(expected, actual);
+    }
+    @Test
+    void getFreeCapacities() {
+        Float result = 10.0F;
+        when(gebindeRepository.getFreeCapacities()).thenReturn(result);
+
+        String expected = "Freie Kapazitäten: " + result + " Liter";
+        String actual = gebindeService.getFreeCapacities();
+
+        assertEquals(expected, actual);
+    }
+    @Test
+    void getGebinde_ReturnEmptyList() {
+        when(gebindeRepository.findAll()).thenReturn(List.of());
+
+        List<Gebinde> expected = List.of();
+        List<Gebinde> actual = gebindeService.getGebinde();
+
+        assertEquals(expected, actual);
+    }
+    @Test
+    void getGebinde_ReturnList() {
+        Gebinde returnedItem = new Gebinde();
+        when(gebindeRepository.findAll()).thenReturn(List.of(returnedItem));
+
+        List<Gebinde> expected = List.of(returnedItem);
+        List<Gebinde> actual = gebindeService.getGebinde();
 
         assertEquals(expected, actual);
     }

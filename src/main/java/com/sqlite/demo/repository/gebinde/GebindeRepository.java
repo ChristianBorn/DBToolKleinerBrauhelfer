@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GebindeRepository extends CrudRepository<Gebinde, Long> {
-    @Query("SELECT SUM(fassungsvermoegen*anzahl) FROM Gebinde WHERE status = 'Leer'")
+    @Query("SELECT SUM(fassungsvermoegen*anzahl) FROM Gebinde WHERE status = 'leer'")
     Float getFreeCapacities();
 }

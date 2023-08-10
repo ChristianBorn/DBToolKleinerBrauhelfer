@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping
 public class GebindeController {
@@ -21,5 +23,9 @@ public class GebindeController {
     @GetMapping("/gebinde/kapazität")
     public ResponseEntity<String> getFreeCapacities() {
         return new ResponseEntity<>(gebindeService.getFreeCapacities(), HttpStatus.OK);
+    }
+    @GetMapping("/gebinde")
+    public ResponseEntity<List<Gebinde>> getGebinde() {
+        return new ResponseEntity<>(gebindeService.getGebinde(), HttpStatus.OK);
     }
 }
