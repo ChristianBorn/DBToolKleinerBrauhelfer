@@ -1,8 +1,8 @@
 package com.sqlite.demo.service;
 
-import com.sqlite.demo.model.Gebinde;
-import com.sqlite.demo.model.GebindeDTO;
-import com.sqlite.demo.model.GebindeStatus;
+import com.sqlite.demo.model.gebinde.Gebinde;
+import com.sqlite.demo.model.gebinde.GebindeDTO;
+import com.sqlite.demo.model.gebinde.GebindeStatus;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import org.junit.jupiter.api.Test;
 

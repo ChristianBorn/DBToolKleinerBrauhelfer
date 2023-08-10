@@ -1,7 +1,7 @@
 package com.sqlite.demo.service;
 
-import com.sqlite.demo.model.Gebinde;
-import com.sqlite.demo.model.GebindeDTO;
+import com.sqlite.demo.model.gebinde.Gebinde;
+import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

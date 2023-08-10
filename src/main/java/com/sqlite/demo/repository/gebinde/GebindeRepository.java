@@ -1,6 +1,6 @@
 package com.sqlite.demo.repository.gebinde;
 
-import com.sqlite.demo.model.Gebinde;
+import com.sqlite.demo.model.gebinde.Gebinde;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

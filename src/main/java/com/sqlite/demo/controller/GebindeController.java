@@ -1,7 +1,7 @@
 package com.sqlite.demo.controller;
 
-import com.sqlite.demo.model.Gebinde;
-import com.sqlite.demo.model.GebindeDTO;
+import com.sqlite.demo.model.gebinde.Gebinde;
+import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.service.GebindeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
