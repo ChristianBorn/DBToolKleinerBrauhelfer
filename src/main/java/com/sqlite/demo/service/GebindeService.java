@@ -5,13 +5,14 @@ import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@org.springframework.stereotype.Service
+@Service
 @AllArgsConstructor
 public class GebindeService {
     @Autowired

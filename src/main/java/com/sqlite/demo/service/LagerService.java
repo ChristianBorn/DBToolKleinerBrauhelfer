@@ -11,13 +11,14 @@ import com.sqlite.demo.repository.lager.MalzRepository;
 import com.sqlite.demo.repository.lager.WeitereZutatenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@org.springframework.stereotype.Service
+@Service
 @AllArgsConstructor
 public class LagerService {
     @Autowired
