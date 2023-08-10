@@ -8,13 +8,14 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "status"}))
 @Data
 public class Gebinde {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true)
+    @Column
     private String name;
 
     @Column
