@@ -16,9 +16,15 @@ public class GebindeController {
     @Autowired
     private GebindeService gebindeService;
 
-    @PostMapping("/gebinde/add")
+    @PutMapping("/gebinde/add")
     public ResponseEntity<Iterable<Gebinde>> saveNewGebinde(@RequestBody GebindeDTO gebindeToAddDTO) {
         return new ResponseEntity<>(gebindeService.saveNewGebinde(gebindeToAddDTO), HttpStatus.CREATED);
+    }
+    @PutMapping("/gebinde/fill")
+    public ResponseEntity<String> fillGebinde(@RequestParam String name,
+                                                         @RequestParam int number) {
+        gebindeService.fillGebinde(name, number);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
     @GetMapping("/gebinde/kapazität")
     public ResponseEntity<String> getFreeCapacities() {

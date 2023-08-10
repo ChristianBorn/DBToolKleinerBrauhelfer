@@ -38,4 +38,13 @@ public class GebindeService {
         return StreamSupport.stream(gebindeRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
+
+    public void fillGebinde(String gebindeNameToAlter, int numberOfGebindeToFill) {
+        // 1. Leere und volle Gebinde mit gebindeNameToAlter holen
+        // 2. von leer.anzahl numberOfGebindeToFill subtrahieren
+        // 3. zu voll.anzahl numberOfGebindeToFill addieren
+        // 4. Beide Objekte wieder speichern
+        gebindeRepository.updateEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
+        gebindeRepository.updateFullByName(gebindeNameToAlter, numberOfGebindeToFill);
+    }
 }
