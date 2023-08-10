@@ -17,7 +17,7 @@ public class GebindeController {
     private GebindeService gebindeService;
 
     @PostMapping("/gebinde/add")
-    public ResponseEntity<Gebinde> saveNewGebinde(@RequestBody GebindeDTO gebindeToAddDTO) {
+    public ResponseEntity<Iterable<Gebinde>> saveNewGebinde(@RequestBody GebindeDTO gebindeToAddDTO) {
         return new ResponseEntity<>(gebindeService.saveNewGebinde(gebindeToAddDTO), HttpStatus.CREATED);
     }
     @GetMapping("/gebinde/kapazität")

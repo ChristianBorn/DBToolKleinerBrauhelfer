@@ -6,6 +6,7 @@ import com.sqlite.demo.model.gebinde.GebindeStatus;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,10 +27,11 @@ class GebindeServiceTest {
                 transmittedGebinde.getAnzahl(),
                 transmittedGebinde.getFassungsvermoegen(),
                 transmittedGebinde.getStatus().getDisplayName());
-        when(gebindeRepository.save(gebindeToSave)).thenReturn(gebindeToSave);
+        Iterable<Gebinde> gebindePairToSave = new ArrayList<>(List.of(gebindeToSave, gebindeToSave.gebindeWithStatus("voll")));
+        when(gebindeRepository.saveAll(gebindePairToSave)).thenReturn(gebindePairToSave);
 
-        Gebinde expected = gebindeToSave;
-        Gebinde actual = gebindeService.saveNewGebinde(transmittedGebinde);
+        Iterable<Gebinde> expected = gebindePairToSave;
+        Iterable<Gebinde> actual = gebindeService.saveNewGebinde(transmittedGebinde);
 
         assertEquals(expected, actual);
     }

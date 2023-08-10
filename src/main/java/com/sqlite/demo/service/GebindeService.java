@@ -6,6 +6,7 @@ import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -16,12 +17,18 @@ public class GebindeService {
     @Autowired
     private GebindeRepository gebindeRepository;
 
-    public Gebinde saveNewGebinde(GebindeDTO gebindeToAddDTO) {
+    public Iterable<Gebinde> saveNewGebinde(GebindeDTO gebindeToAddDTO) {
         Gebinde gebindeToAdd = new Gebinde(gebindeToAddDTO.getName(),
                 gebindeToAddDTO.getAnzahl(),
                 gebindeToAddDTO.getFassungsvermoegen(),
                 gebindeToAddDTO.getStatus().getDisplayName());
-        return gebindeRepository.save(gebindeToAdd);
+
+        List<Gebinde> gebindePairToSave = new ArrayList<>(
+                List.of(gebindeToAdd,
+                        gebindeToAdd
+                                .gebindeWithStatus("voll")
+                                .gebindeWithAnzahl(0)));
+        return gebindeRepository.saveAll(gebindePairToSave);
     }
     public String getFreeCapacities() {
         return "Freie Kapazitäten: " + gebindeRepository.getFreeCapacities() + " Liter";
