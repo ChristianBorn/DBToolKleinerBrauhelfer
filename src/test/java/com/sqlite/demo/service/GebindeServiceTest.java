@@ -3,7 +3,7 @@ package com.sqlite.demo.service;
 import com.sqlite.demo.model.Gebinde;
 import com.sqlite.demo.model.GebindeDTO;
 import com.sqlite.demo.model.GebindeStatus;
-import com.sqlite.demo.repository.GebindeRepository;
+import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

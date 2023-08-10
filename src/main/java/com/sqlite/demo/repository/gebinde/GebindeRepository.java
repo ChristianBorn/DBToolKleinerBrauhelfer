@@ -1,4 +1,4 @@
-package com.sqlite.demo.repository;
+package com.sqlite.demo.repository.gebinde;
 
 import com.sqlite.demo.model.Gebinde;
 import org.springframework.data.jpa.repository.Query;
