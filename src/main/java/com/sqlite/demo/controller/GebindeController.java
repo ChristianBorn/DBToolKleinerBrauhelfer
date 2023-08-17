@@ -6,6 +6,7 @@ import com.sqlite.demo.service.GebindeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +22,15 @@ public class GebindeController {
         return new ResponseEntity<>(gebindeService.saveNewGebinde(gebindeToAddDTO), HttpStatus.CREATED);
     }
     @PutMapping("/gebinde/fill")
-    public ResponseEntity<String> fillGebinde(@RequestParam String name,
-                                                         @RequestParam int number) {
-        gebindeService.fillGebinde(name, number);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+    public ResponseEntity<String> fillGebinde(@RequestParam String name, @RequestParam int number) {
+        try {
+            gebindeService.fillGebinde(name, number);
+            return new ResponseEntity<>("OK", HttpStatus.OK);
+        } catch (JpaSystemException e) {
+            return new ResponseEntity<>("Menge zu füllender Gebinde übersteigt Gesamtzahl der verfügbaren Gebinde", HttpStatus.BAD_REQUEST);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
     @GetMapping("/gebinde/kapazität")
     public ResponseEntity<String> getFreeCapacities() {

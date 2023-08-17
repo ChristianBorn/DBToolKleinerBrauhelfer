@@ -15,6 +15,7 @@ public interface GebindeRepository extends CrudRepository<Gebinde, Long> {
 
     @Query("SELECT SUM(fassungsvermoegen*anzahl) FROM Gebinde WHERE status = 'leer'")
     Float getFreeCapacities();
+    boolean existsByName(String name);
 
     @Transactional
     @Modifying

@@ -5,6 +5,7 @@ import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,9 +39,15 @@ public class GebindeService {
         return StreamSupport.stream(gebindeRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
-
-    public void fillGebinde(String gebindeNameToAlter, int numberOfGebindeToFill) {
-        gebindeRepository.updateEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
-        gebindeRepository.updateFullByName(gebindeNameToAlter, numberOfGebindeToFill);
+    public void fillGebinde(String gebindeNameToAlter, int numberOfGebindeToFill) throws JpaSystemException{
+        if (numberOfGebindeToFill >= 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
+            gebindeRepository.updateEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
+            gebindeRepository.updateFullByName(gebindeNameToAlter, numberOfGebindeToFill);
+        }
+        else if (numberOfGebindeToFill < 0) {
+            throw new IllegalArgumentException("Die Anzahl der zu füllenden Gebinde muss größer 0 sein");
+        } else {
+            throw new IllegalArgumentException("Das angegebene Gebinde existiert nicht unter diesem Namen");
+        }
     }
 }
