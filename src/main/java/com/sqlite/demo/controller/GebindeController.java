@@ -8,15 +8,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping
+@ControllerAdvice
 public class GebindeController {
     @Autowired
     private GebindeService gebindeService;
 
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    private ResponseEntity<String> handleException(RuntimeException ex) {
+        String bodyOfResponse = "Benötigter Parameter ist nicht vorhanden oder fehlerhaft: "+ex.getCause();
+        return new ResponseEntity<>(bodyOfResponse, HttpStatus.BAD_REQUEST);
+    }
     @PutMapping("/gebinde/add")
     public ResponseEntity<Iterable<Gebinde>> saveNewGebinde(@RequestBody GebindeDTO gebindeToAddDTO) {
         return new ResponseEntity<>(gebindeService.saveNewGebinde(gebindeToAddDTO), HttpStatus.CREATED);

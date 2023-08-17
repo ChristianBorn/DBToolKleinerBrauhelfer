@@ -39,7 +39,7 @@ public class GebindeService {
         return StreamSupport.stream(gebindeRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
-    public void fillGebinde(String gebindeNameToAlter, int numberOfGebindeToFill) throws JpaSystemException{
+    public void fillGebinde(String gebindeNameToAlter, int numberOfGebindeToFill) throws JpaSystemException, IllegalArgumentException{
         if (numberOfGebindeToFill >= 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
             gebindeRepository.updateEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
             gebindeRepository.updateFullByName(gebindeNameToAlter, numberOfGebindeToFill);
