@@ -22,13 +22,27 @@ public interface GebindeRepository extends CrudRepository<Gebinde, Long> {
     @Query("UPDATE Gebinde g " +
             "SET g.anzahl = g.anzahl - :numberOfGebindeToFill " +
             "WHERE g.name = :gebindeNameToAlter AND g.status = 'leer'")
-    void updateEmptyByName(@Param("gebindeNameToAlter") String gebindeNameToAlter,
-                             @Param("numberOfGebindeToFill") int numberOfGebindeToFill);
+    void reduceEmptyByName(@Param("gebindeNameToAlter") String gebindeNameToAlter,
+                           @Param("numberOfGebindeToFill") int numberOfGebindeToFill);
+    @Transactional
+    @Modifying
+    @Query("UPDATE Gebinde g " +
+            "SET g.anzahl = g.anzahl + :numberOfGebindeToFill " +
+            "WHERE g.name = :gebindeNameToAlter AND g.status = 'leer'")
+    void increaseEmptyByName(@Param("gebindeNameToAlter") String gebindeNameToAlter,
+                           @Param("numberOfGebindeToFill") int numberOfGebindeToEmpty);
     @Transactional
     @Modifying
     @Query("UPDATE Gebinde g " +
             "SET g.anzahl = g.anzahl + :numberOfGebindeToFill " +
             "WHERE g.name = :gebindeNameToAlter AND g.status = 'voll'")
-    void updateFullByName(@Param("gebindeNameToAlter") String gebindeNameToAlter,
+    void increaseFullByName(@Param("gebindeNameToAlter") String gebindeNameToAlter,
                             @Param("numberOfGebindeToFill") int numberOfGebindeToFill);
+    @Transactional
+    @Modifying
+    @Query("UPDATE Gebinde g " +
+            "SET g.anzahl = g.anzahl - :numberOfGebindeToFill " +
+            "WHERE g.name = :gebindeNameToAlter AND g.status = 'voll'")
+    void reduceFullByName(@Param("gebindeNameToAlter") String gebindeNameToAlter,
+                            @Param("numberOfGebindeToFill") int numberOfGebindeToEmpty);
 }
