@@ -71,8 +71,8 @@ class GebindeServiceTest {
         int numberOfGebindeToFill = 1;
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
         gebindeService.fillGebinde(gebindeNameToAlter, numberOfGebindeToFill);
-        verify(gebindeRepository).updateEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
-        verify(gebindeRepository).updateFullByName(gebindeNameToAlter, numberOfGebindeToFill);
+        verify(gebindeRepository).reduceEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
+        verify(gebindeRepository).increaseFullByName(gebindeNameToAlter, numberOfGebindeToFill);
     }
     @Test
     void fillGebinde_numberParamLowerThan0() {
@@ -91,7 +91,7 @@ class GebindeServiceTest {
         String gebindeNameToAlter = "test";
         int numberOfGebindeToFill = 10;
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
-        doThrow(new JpaSystemException(new RuntimeException())).when(gebindeRepository).updateEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
+        doThrow(new JpaSystemException(new RuntimeException())).when(gebindeRepository).reduceEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
         try {
             gebindeService.fillGebinde(gebindeNameToAlter, numberOfGebindeToFill);
             fail();
