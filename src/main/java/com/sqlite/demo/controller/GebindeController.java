@@ -29,13 +29,10 @@ public class GebindeController {
         return new ResponseEntity<>(gebindeService.saveNewGebinde(gebindeToAddDTO), HttpStatus.CREATED);
     }
     @PutMapping("/gebinde/fill")
-    public ResponseEntity<String> fillGebinde(@RequestParam String name, @RequestParam int number) {
+    public ResponseEntity<String> fillGebinde(@RequestParam String name, @RequestParam int number) throws JpaSystemException {
         try {
             gebindeService.fillGebinde(name, number);
             return new ResponseEntity<>("OK", HttpStatus.OK);
-        } catch (JpaSystemException e) {
-            return new ResponseEntity<>("Menge zu füllender Gebinde übersteigt Gesamtzahl der verfügbaren Gebinde",
-                    HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

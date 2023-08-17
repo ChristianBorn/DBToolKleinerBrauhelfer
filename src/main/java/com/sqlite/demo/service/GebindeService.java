@@ -4,6 +4,7 @@ import com.sqlite.demo.model.gebinde.Gebinde;
 import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class GebindeService {
     @Autowired
     private GebindeRepository gebindeRepository;
