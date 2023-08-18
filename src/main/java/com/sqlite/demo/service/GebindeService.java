@@ -21,7 +21,7 @@ public class GebindeService {
     @Autowired
     private GebindeRepository gebindeRepository;
 
-    public Iterable<Gebinde> saveNewGebinde(GebindeDTO gebindeToAddDTO) {
+    public Iterable<Gebinde> saveNewEmptyGebinde(GebindeDTO gebindeToAddDTO) {
         Gebinde gebindeToAdd = new Gebinde(gebindeToAddDTO.getName(),
                 gebindeToAddDTO.getAnzahl(),
                 gebindeToAddDTO.getFassungsvermoegen(),
@@ -36,6 +36,9 @@ public class GebindeService {
     }
     public String getFreeCapacities() {
         return "Freie Kapazitäten: " + gebindeRepository.getFreeCapacities() + " Liter";
+    }
+    public List<Object> getFreeCapacitiesGrouped() {
+        return gebindeRepository.getFreeCapacitiesGrouped();
     }
     public List<Gebinde> getGebinde() {
         return StreamSupport.stream(gebindeRepository.findAll().spliterator(), false)

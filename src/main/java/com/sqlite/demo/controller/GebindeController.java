@@ -26,7 +26,7 @@ public class GebindeController {
     }
     @PutMapping("/gebinde/add")
     public ResponseEntity<Iterable<Gebinde>> saveNewGebinde(@RequestBody GebindeDTO gebindeToAddDTO) {
-        return new ResponseEntity<>(gebindeService.saveNewGebinde(gebindeToAddDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(gebindeService.saveNewEmptyGebinde(gebindeToAddDTO), HttpStatus.CREATED);
     }
     @PutMapping("/gebinde/fill")
     public ResponseEntity<String> fillGebinde(@RequestParam String name, @RequestParam int number) throws JpaSystemException {
@@ -41,6 +41,10 @@ public class GebindeController {
     @GetMapping("/gebinde/kapazität")
     public ResponseEntity<String> getFreeCapacities() {
         return new ResponseEntity<>(gebindeService.getFreeCapacities(), HttpStatus.OK);
+    }
+    @GetMapping("/gebinde/kapazität/grouped")
+    public ResponseEntity<List<Object>> getFreeCapacitiesGrouped() {
+        return new ResponseEntity<>(gebindeService.getFreeCapacitiesGrouped(), HttpStatus.OK);
     }
     @GetMapping("/gebinde")
     public ResponseEntity<List<Gebinde>> getGebinde() {

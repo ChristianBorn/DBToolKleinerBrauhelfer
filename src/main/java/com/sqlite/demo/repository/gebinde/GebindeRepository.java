@@ -8,9 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @Repository
+
 public interface GebindeRepository extends CrudRepository<Gebinde, Long> {
 
     @Query("SELECT SUM(fassungsvermoegen*anzahl) FROM Gebinde WHERE status = 'leer'")
@@ -45,4 +47,7 @@ public interface GebindeRepository extends CrudRepository<Gebinde, Long> {
             "WHERE g.name = :gebindeNameToAlter AND g.status = 'voll'")
     void reduceFullByName(@Param("gebindeNameToAlter") String gebindeNameToAlter,
                             @Param("numberOfGebindeToFill") int numberOfGebindeToEmpty);
+
+    @Query(value = "SELECT name, anzahl,fassungsvermoegen*anzahl FROM Gebinde WHERE status = 'leer' GROUP BY name")
+    List<Object> getFreeCapacitiesGrouped();
 }
