@@ -31,7 +31,7 @@ class GebindeServiceTest {
         when(gebindeRepository.saveAll(gebindePairToSave)).thenReturn(gebindePairToSave);
 
         Iterable<Gebinde> expected = gebindePairToSave;
-        Iterable<Gebinde> actual = gebindeService.saveNewGebinde(transmittedGebinde);
+        Iterable<Gebinde> actual = gebindeService.saveNewEmptyGebinde(transmittedGebinde);
 
         assertEquals(expected, actual);
     }
