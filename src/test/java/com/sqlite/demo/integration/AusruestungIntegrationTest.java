@@ -12,14 +12,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SudIntegrationTest {
+class AusruestungIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void getSud_ExpectEmptyList() throws Exception {
-        mockMvc.perform(get("/sud"))
+    void getAusruestung_ExpectEmptyList() throws Exception {
+        mockMvc.perform(get("/ausruestung"))
+                .andExpect(status()
+                        .isOk())
+                .andExpect(content()
+                        .contentType(MediaType.APPLICATION_JSON));
+    }
+    @Test
+    void getGeraete_ExpectEmptyList() throws Exception {
+        mockMvc.perform(get("/geraete"))
                 .andExpect(status()
                         .isOk())
                 .andExpect(content()
