@@ -30,24 +30,13 @@ public class GebindeController {
     }
     @PutMapping("/gebinde/fill")
     public ResponseEntity<String> fillGebinde(@RequestParam String name, @RequestParam int number) throws JpaSystemException {
-        try {
             gebindeService.fillGebinde(name, number);
             return new ResponseEntity<>("OK", HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
     }
     @PutMapping("/gebinde/empty")
     public ResponseEntity<String> emptyGebinde(@RequestParam String name, @RequestParam int number) {
-        try {
             gebindeService.emptyGebinde(name, number);
             return new ResponseEntity<>("OK", HttpStatus.OK);
-        } catch (JpaSystemException e) {
-            return new ResponseEntity<>("Menge zu leerender Gebinde übersteigt Gesamtzahl der verfügbaren Gebinde",
-                    HttpStatus.BAD_REQUEST);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
     }
     @GetMapping("/gebinde/kapazität")
     public ResponseEntity<String> getFreeCapacities() {

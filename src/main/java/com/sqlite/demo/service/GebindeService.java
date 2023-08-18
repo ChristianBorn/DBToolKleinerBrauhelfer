@@ -42,22 +42,22 @@ public class GebindeService {
                 .collect(Collectors.toList());
     }
     public void fillGebinde(String gebindeNameToAlter, int numberOfGebindeToFill) throws JpaSystemException, IllegalArgumentException{
-        if (numberOfGebindeToFill >= 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
+        if (numberOfGebindeToFill > 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
             gebindeRepository.reduceEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
             gebindeRepository.increaseFullByName(gebindeNameToAlter, numberOfGebindeToFill);
         }
-        else if (numberOfGebindeToFill < 0) {
+        else if (numberOfGebindeToFill <= 0) {
             throw new IllegalArgumentException("Die Anzahl der zu füllenden Gebinde muss größer 0 sein");
         } else {
             throw new IllegalArgumentException("Das angegebene Gebinde existiert nicht unter diesem Namen");
         }
     }
     public void emptyGebinde(String gebindeNameToAlter, int numberOfGebindeToEmpty)throws JpaSystemException, IllegalArgumentException{
-        if (numberOfGebindeToEmpty >= 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
+        if (numberOfGebindeToEmpty > 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
             gebindeRepository.reduceFullByName(gebindeNameToAlter, numberOfGebindeToEmpty);
             gebindeRepository.increaseEmptyByName(gebindeNameToAlter, numberOfGebindeToEmpty);
         }
-        else if (numberOfGebindeToEmpty < 0) {
+        else if (numberOfGebindeToEmpty <= 0) {
             throw new IllegalArgumentException("Die Anzahl der zu leerenden Gebinde muss größer 0 sein");
         } else {
             throw new IllegalArgumentException("Das angegebene Gebinde existiert nicht unter diesem Namen");
