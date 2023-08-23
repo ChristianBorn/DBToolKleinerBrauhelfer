@@ -1,10 +1,8 @@
 package com.sqlite.demo.model.gebinde;
 
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 
 import javax.persistence.*;
 
@@ -36,7 +34,8 @@ public class Gebinde {
         this.status = status;
     }
 
-    public Gebinde() {}
+    public Gebinde() {
+    }
 
     public Gebinde gebindeWithStatus(String status) {
         return new Gebinde(this.getId(),
@@ -45,6 +44,7 @@ public class Gebinde {
                 this.getFassungsvermoegen(),
                 status);
     }
+
     public Gebinde gebindeWithAnzahl(int anzahl) {
         return new Gebinde(this.getId(),
                 this.getName(),
