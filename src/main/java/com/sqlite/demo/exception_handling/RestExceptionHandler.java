@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
@@ -24,7 +25,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleIllegalArgumentException(RuntimeException exception) {
         return buildResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    private ResponseEntity<String> handleException(RuntimeException ex) {
+        String bodyOfResponse = "Benötigter Parameter ist nicht vorhanden oder fehlerhaft: "+ex.getCause();
+        return new ResponseEntity<>(bodyOfResponse, HttpStatus.BAD_REQUEST);
+    }
     private ResponseEntity<Object> buildResponseEntity(String message, HttpStatus status) {
         return new ResponseEntity<>(message, status);
     }
+
 }
