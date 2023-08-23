@@ -56,12 +56,8 @@ public class LagerController {
     }
 
     @GetMapping("/weitere-zutaten/wert")
-    public ResponseEntity<Object> getWertWeitereZutaten() {
-        try {
-            return new ResponseEntity<>(lagerService.getWertWeitereZutaten(), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Object> getWertWeitereZutaten() throws IllegalArgumentException {
+        return new ResponseEntity<>(lagerService.getWertWeitereZutaten(), HttpStatus.OK);
     }
 
     @GetMapping("/lager/wert")
