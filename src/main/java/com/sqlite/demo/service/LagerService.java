@@ -84,7 +84,7 @@ public class LagerService {
                         return singleRecord.getMenge() * (singleRecord.getPreis() / 1000);
                     } else {
                         throw new IllegalArgumentException("Einheitentyp nicht bekannt: " + singleRecord.getEinheit() +
-                                "in Tabelle 'WeitereZutaten'");
+                                " in Tabelle 'WeitereZutaten'");
                     }
                 })
                 .reduce(0.0f, Float::sum);
