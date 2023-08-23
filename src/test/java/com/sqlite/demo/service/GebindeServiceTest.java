@@ -46,6 +46,16 @@ class GebindeServiceTest {
         assertEquals(expected, actual);
     }
     @Test
+    void getFreeCapacitiesGrouped() {
+        List<Object> result = new ArrayList<>(List.of());
+        when(gebindeRepository.getFreeCapacitiesGrouped()).thenReturn(result);
+
+        List<Object> expected = result;
+        List<Object> actual = gebindeService.getFreeCapacitiesGrouped();
+
+        assertEquals(expected, actual);
+    }
+    @Test
     void getGebinde_ReturnEmptyList() {
         when(gebindeRepository.findAll()).thenReturn(List.of());
 
@@ -106,6 +116,52 @@ class GebindeServiceTest {
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(false);
         try {
             gebindeService.fillGebinde(gebindeNameToAlter, numberOfGebindeToFill);
+            fail();
+        } catch (IllegalArgumentException  e) {
+            assertEquals("Das angegebene Gebinde existiert nicht unter diesem Namen", e.getMessage());
+        }
+    }
+    @Test
+    void emptyGebinde_Succesfull() {
+        String gebindeNameToAlter = "test";
+        int numberOfGebindeToEmpty = 1;
+        when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
+        gebindeService.emptyGebinde(gebindeNameToAlter, numberOfGebindeToEmpty);
+        verify(gebindeRepository).reduceFullByName(gebindeNameToAlter, numberOfGebindeToEmpty);
+        verify(gebindeRepository).increaseEmptyByName(gebindeNameToAlter, numberOfGebindeToEmpty);
+    }
+    @Test
+    void emptyGebinde_numberParamLowerThan0() {
+        String gebindeNameToAlter = "test";
+        int numberOfGebindeToEmpty = -1;
+        when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
+        try {
+            gebindeService.emptyGebinde(gebindeNameToAlter, numberOfGebindeToEmpty);
+            fail();
+        } catch (IllegalArgumentException  e) {
+            assertEquals("Die Anzahl der zu leerenden Gebinde muss größer 0 sein", e.getMessage());
+        }
+    }
+    @Test
+    void emptyGebinde_numberParamExceedsObjectsInDB() {
+        String gebindeNameToAlter = "test";
+        int numberOfGebindeToEmpty = 10;
+        when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
+        doThrow(new JpaSystemException(new RuntimeException())).when(gebindeRepository).reduceFullByName(gebindeNameToAlter, numberOfGebindeToEmpty);
+        try {
+            gebindeService.emptyGebinde(gebindeNameToAlter, numberOfGebindeToEmpty);
+            fail();
+        } catch (JpaSystemException  e) {
+            assertEquals("nested exception is java.lang.RuntimeException", e.getMessage());
+        }
+    }
+    @Test
+    void emptyGebinde_givenNameDoesNotExistInDB() {
+        String gebindeNameToAlter = "test";
+        int numberOfGebindeToEmpty = 1;
+        when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(false);
+        try {
+            gebindeService.emptyGebinde(gebindeNameToAlter, numberOfGebindeToEmpty);
             fail();
         } catch (IllegalArgumentException  e) {
             assertEquals("Das angegebene Gebinde existiert nicht unter diesem Namen", e.getMessage());
