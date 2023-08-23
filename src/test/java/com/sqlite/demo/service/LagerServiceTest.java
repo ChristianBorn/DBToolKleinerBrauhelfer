@@ -187,7 +187,7 @@ class LagerServiceTest {
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Einheitentyp nicht bekannt: " + retrievedItem.getEinheit() +
-                            "in Tabelle 'WeitereZutaten'",
+                            " in Tabelle 'WeitereZutaten'",
                     e.getMessage());
         }
     }
