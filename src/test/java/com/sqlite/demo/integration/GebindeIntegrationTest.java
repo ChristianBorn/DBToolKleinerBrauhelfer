@@ -78,4 +78,17 @@ class GebindeIntegrationTest {
                 .andReturn().getResponse().getContentAsString();
         assertEquals("OK", result);
     }
+    @Test
+    @DirtiesContext
+    @Transactional
+    @Rollback
+    void emptyGebinde_ExpectSuccess() throws Exception {
+        String requestUrl = "/gebinde/empty?name=" + urlParamName + "&number=" + urlParamNumber;
+        System.out.println(requestUrl);
+        String result = mockMvc.perform(put(requestUrl))
+                .andExpect(status()
+                        .isOk())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("OK", result);
+    }
 }
