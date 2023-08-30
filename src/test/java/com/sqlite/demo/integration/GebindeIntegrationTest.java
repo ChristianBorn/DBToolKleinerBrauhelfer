@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
+@Rollback
 class GebindeIntegrationTest {
 
     private final String urlParamName = "Fass";
@@ -38,7 +40,6 @@ class GebindeIntegrationTest {
     @Test
     @DirtiesContext
     @Transactional
-    @Rollback
     void addGebinde_ExpectSuccess() throws Exception {
         String requestBody = "{" +
                 "    \"name\": \"Test\"," +
@@ -46,7 +47,8 @@ class GebindeIntegrationTest {
                 "    \"fassungsvermoegen\": 0.42," +
                 "    \"status\": \"leer\"" +
                 "}";
-        String result = mockMvc.perform(put("/gebinde/add")
+        String requestUrl = "/gebinde/add";
+        String result = mockMvc.perform(put(requestUrl)
                         .contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isCreated())
@@ -65,10 +67,10 @@ class GebindeIntegrationTest {
         assertTrue(resultList.get(0).getStatus().equals(GebindeStatus.LEER.getDisplayName()) &&
                 resultList.get(1).getStatus().equals(GebindeStatus.VOLL.getDisplayName()));
     }
+
     @Test
     @DirtiesContext
     @Transactional
-    @Rollback
     void fillGebinde_ExpectSuccess() throws Exception {
         String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + urlParamNumber;
         System.out.println(requestUrl);
@@ -78,12 +80,12 @@ class GebindeIntegrationTest {
                 .andReturn().getResponse().getContentAsString();
         assertEquals("OK", result);
     }
+
     @Test
     @DirtiesContext
     @Transactional
-    @Rollback
     void fillGebinde_ExpectException_InvalidNumberParam() throws Exception {
-        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + (urlParamNumber-1);
+        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + (urlParamNumber - 1);
         System.out.println(requestUrl);
         String result = mockMvc.perform(put(requestUrl))
                 .andExpect(status()
@@ -91,10 +93,10 @@ class GebindeIntegrationTest {
                 .andReturn().getResponse().getContentAsString();
         assertEquals("Die Anzahl der zu füllenden Gebinde muss größer 0 sein", result);
     }
+
     @Test
     @DirtiesContext
     @Transactional
-    @Rollback
     void fillGebinde_ExpectException_InvalidNameParam() throws Exception {
         String requestUrl = "/gebinde/fill?name=" + (urlParamName + "a") + "&number=" + urlParamNumber;
         System.out.println(requestUrl);
@@ -104,12 +106,12 @@ class GebindeIntegrationTest {
                 .andReturn().getResponse().getContentAsString();
         assertEquals("Das angegebene Gebinde existiert nicht unter diesem Namen", result);
     }
+
     @Test
     @DirtiesContext
     @Transactional
-    @Rollback
     void fillGebinde_ExpectException_NumberParamTooBig() throws Exception {
-        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + (urlParamNumber+100);
+        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + (urlParamNumber + 100);
         System.out.println(requestUrl);
         String result = mockMvc.perform(put(requestUrl))
                 .andExpect(status()
@@ -118,10 +120,10 @@ class GebindeIntegrationTest {
         assertEquals("Fehler bei Interaktion mit der Datenbank: could not execute statement; " +
                 "nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement", result);
     }
+
     @Test
     @DirtiesContext
     @Transactional
-    @Rollback
     void emptyGebinde_ExpectSuccess() throws Exception {
         String requestUrl = "/gebinde/empty?name=" + urlParamName + "&number=" + urlParamNumber;
         System.out.println(requestUrl);
@@ -130,5 +132,74 @@ class GebindeIntegrationTest {
                         .isOk())
                 .andReturn().getResponse().getContentAsString();
         assertEquals("OK", result);
+    }
+
+    @Test
+    @DirtiesContext
+    @Transactional
+    void emptyGebinde_ExpectException_InvalidNumberParam() throws Exception {
+        String requestUrl = "/gebinde/empty?name=" + urlParamName + "&number=" + (urlParamNumber - 1);
+        System.out.println(requestUrl);
+        String result = mockMvc.perform(put(requestUrl))
+                .andExpect(status()
+                        .isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("Die Anzahl der zu leerenden Gebinde muss größer 0 sein", result);
+    }
+
+    @Test
+    @DirtiesContext
+    @Transactional
+    void emptyGebinde_ExpectException_InvalidNameParam() throws Exception {
+        String requestUrl = "/gebinde/empty?name=" + (urlParamName + "a") + "&number=" + urlParamNumber;
+        System.out.println(requestUrl);
+        String result = mockMvc.perform(put(requestUrl))
+                .andExpect(status()
+                        .isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("Das angegebene Gebinde existiert nicht unter diesem Namen", result);
+    }
+
+    @Test
+    @DirtiesContext
+    @Transactional
+    void emptyGebinde_ExpectException_NumberParamTooBig() throws Exception {
+        String requestUrl = "/gebinde/empty?name=" + urlParamName + "&number=" + (urlParamNumber + 100);
+        System.out.println(requestUrl);
+        String result = mockMvc.perform(put(requestUrl))
+                .andExpect(status()
+                        .isInternalServerError())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("Fehler bei Interaktion mit der Datenbank: could not execute statement; " +
+                "nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement", result);
+    }
+
+    @Test
+    void getFreeCapacities() throws Exception {
+        String requestUrl = "/gebinde/kapazität";
+        String result = mockMvc.perform(get(requestUrl))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("Freie Kapazitäten: 34.11 Liter", result);
+    }
+
+    @Test
+    void getFreeCapacitiesGrouped() throws Exception {
+        String requestUrl = "/gebinde/kapazität/grouped";
+        String result = mockMvc.perform(get(requestUrl))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        List<Object> returnedObject = objectMapper.readValue(result, new TypeReference<>() {});
+        assertEquals(3, returnedObject.size());
+    }
+
+    @Test
+    void getGebinde() throws Exception {
+        String requestUrl = "/gebinde";
+        String result = mockMvc.perform(get(requestUrl))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        List<Gebinde> returnedObject = objectMapper.readValue(result, new TypeReference<>() {});
+        assertEquals(6, returnedObject.size());
     }
 }

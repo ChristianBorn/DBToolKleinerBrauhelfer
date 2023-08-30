@@ -42,6 +42,7 @@ public class GebindeController {
     }
 
     @GetMapping("/gebinde/kapazität/grouped")
+    //TODO: Implement new class "capacity" to replace Object here
     public ResponseEntity<List<Object>> getFreeCapacitiesGrouped() {
         return new ResponseEntity<>(gebindeService.getFreeCapacitiesGrouped(), HttpStatus.OK);
     }
