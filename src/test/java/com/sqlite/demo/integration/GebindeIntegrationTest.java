@@ -82,6 +82,46 @@ class GebindeIntegrationTest {
     @DirtiesContext
     @Transactional
     @Rollback
+    void fillGebinde_ExpectException_InvalidNumberParam() throws Exception {
+        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + (urlParamNumber-1);
+        System.out.println(requestUrl);
+        String result = mockMvc.perform(put(requestUrl))
+                .andExpect(status()
+                        .isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("Die Anzahl der zu füllenden Gebinde muss größer 0 sein", result);
+    }
+    @Test
+    @DirtiesContext
+    @Transactional
+    @Rollback
+    void fillGebinde_ExpectException_InvalidNameParam() throws Exception {
+        String requestUrl = "/gebinde/fill?name=" + (urlParamName + "a") + "&number=" + urlParamNumber;
+        System.out.println(requestUrl);
+        String result = mockMvc.perform(put(requestUrl))
+                .andExpect(status()
+                        .isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("Das angegebene Gebinde existiert nicht unter diesem Namen", result);
+    }
+    @Test
+    @DirtiesContext
+    @Transactional
+    @Rollback
+    void fillGebinde_ExpectException_NumberParamTooBig() throws Exception {
+        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + (urlParamNumber+100);
+        System.out.println(requestUrl);
+        String result = mockMvc.perform(put(requestUrl))
+                .andExpect(status()
+                        .isInternalServerError())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("Fehler bei Interaktion mit der Datenbank: could not execute statement; " +
+                "nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement", result);
+    }
+    @Test
+    @DirtiesContext
+    @Transactional
+    @Rollback
     void emptyGebinde_ExpectSuccess() throws Exception {
         String requestUrl = "/gebinde/empty?name=" + urlParamName + "&number=" + urlParamNumber;
         System.out.println(requestUrl);
