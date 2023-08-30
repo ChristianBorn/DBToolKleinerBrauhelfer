@@ -1,5 +1,6 @@
 package com.sqlite.demo.service;
 
+import com.sqlite.demo.model.gebinde.Capacity;
 import com.sqlite.demo.model.gebinde.Gebinde;
 import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.model.gebinde.GebindeStatus;
@@ -47,11 +48,10 @@ class GebindeServiceTest {
     }
     @Test
     void getFreeCapacitiesGrouped() {
-        List<Object> result = new ArrayList<>(List.of());
-        when(gebindeRepository.getFreeCapacitiesGrouped()).thenReturn(result);
+        when(gebindeRepository.getFreeCapacitiesGrouped()).thenReturn(List.of());
 
-        List<Object> expected = result;
-        List<Object> actual = gebindeService.getFreeCapacitiesGrouped();
+        List<Capacity> expected = List.of();
+        List<Capacity> actual = gebindeService.getFreeCapacitiesGrouped();
 
         assertEquals(expected, actual);
     }

@@ -1,5 +1,6 @@
 package com.sqlite.demo.controller;
 
+import com.sqlite.demo.model.gebinde.Capacity;
 import com.sqlite.demo.model.gebinde.Gebinde;
 import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.service.GebindeService;
@@ -42,8 +43,7 @@ public class GebindeController {
     }
 
     @GetMapping("/gebinde/kapazität/grouped")
-    //TODO: Implement new class "capacity" to replace Object here
-    public ResponseEntity<List<Object>> getFreeCapacitiesGrouped() {
+    public ResponseEntity<List<Capacity>> getFreeCapacitiesGrouped() {
         return new ResponseEntity<>(gebindeService.getFreeCapacitiesGrouped(), HttpStatus.OK);
     }
 

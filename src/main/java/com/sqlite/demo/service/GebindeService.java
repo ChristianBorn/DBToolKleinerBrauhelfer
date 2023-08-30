@@ -1,5 +1,6 @@
 package com.sqlite.demo.service;
 
+import com.sqlite.demo.model.gebinde.Capacity;
 import com.sqlite.demo.model.gebinde.Gebinde;
 import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
@@ -39,7 +40,7 @@ public class GebindeService {
         return "Freie Kapazitäten: " + gebindeRepository.getFreeCapacities() + " Liter";
     }
 
-    public List<Object> getFreeCapacitiesGrouped() {
+    public List<Capacity> getFreeCapacitiesGrouped() {
         return gebindeRepository.getFreeCapacitiesGrouped();
     }
 
