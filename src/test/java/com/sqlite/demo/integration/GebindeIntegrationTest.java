@@ -17,8 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application.properties")
 class GebindeIntegrationTest {
 
+    private final String urlParamName = "Fass";
+    private final int urlParamNumber = 1;
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -36,7 +38,7 @@ class GebindeIntegrationTest {
     @Test
     @DirtiesContext
     @Transactional
-    @Rollback(value = true)
+    @Rollback
     void addGebinde_ExpectSuccess() throws Exception {
         String requestBody = "{" +
                 "    \"name\": \"Test\"," +
@@ -62,6 +64,18 @@ class GebindeIntegrationTest {
                 resultList.get(1).getFassungsvermoegen().equals(0.42F));
         assertTrue(resultList.get(0).getStatus().equals(GebindeStatus.LEER.getDisplayName()) &&
                 resultList.get(1).getStatus().equals(GebindeStatus.VOLL.getDisplayName()));
-
+    }
+    @Test
+    @DirtiesContext
+    @Transactional
+    @Rollback
+    void fillGebinde_ExpectSuccess() throws Exception {
+        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + urlParamNumber;
+        System.out.println(requestUrl);
+        String result = mockMvc.perform(put(requestUrl))
+                .andExpect(status()
+                        .isOk())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("OK", result);
     }
 }
