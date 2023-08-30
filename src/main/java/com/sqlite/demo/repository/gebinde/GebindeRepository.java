@@ -53,7 +53,7 @@ public interface GebindeRepository extends CrudRepository<Gebinde, Long> {
     void reduceFullByName(@Param("gebindeNameToAlter") String gebindeNameToAlter,
                           @Param("numberOfGebindeToFill") int numberOfGebindeToEmpty);
 
-    @Query(value = "SELECT name as name, anzahl as anzahl,fassungsvermoegen*anzahl as SummierteKapazität " +
+    @Query(value = "SELECT name as name, anzahl as anzahl,(fassungsvermoegen*anzahl) as summierteKapazitaet " +
             "FROM Gebinde WHERE status = 'leer' GROUP BY name")
     List<Capacity> getFreeCapacitiesGrouped();
 }
