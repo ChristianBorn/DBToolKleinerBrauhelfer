@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -16,6 +15,6 @@ public class SudService {
 
     public List<Sud> getSud() {
         return StreamSupport.stream(sudRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

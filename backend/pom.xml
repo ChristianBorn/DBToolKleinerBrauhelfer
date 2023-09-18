@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.pxp</groupId>
-	<artifactId>SQLite.demo</artifactId>
+	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Spring Boot and SQLite</name>
 	<description>CRUD example with Spring Boot and SQLite</description>
