@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -46,7 +45,7 @@ public class GebindeService {
 
     public List<Gebinde> getGebinde() {
         return StreamSupport.stream(gebindeRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void fillGebinde(String gebindeNameToAlter, int numberOfGebindeToFill) throws JpaSystemException, IllegalArgumentException {

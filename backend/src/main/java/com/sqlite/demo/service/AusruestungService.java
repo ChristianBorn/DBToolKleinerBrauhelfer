@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -23,11 +22,11 @@ public class AusruestungService {
 
     public List<Geraet> getGeraete() {
         return StreamSupport.stream(geraeteRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Ausruestung> getAusruestung() {
         return StreamSupport.stream(ausruestungRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
