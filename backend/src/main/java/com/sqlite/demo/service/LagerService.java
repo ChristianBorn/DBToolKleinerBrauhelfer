@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -31,7 +32,7 @@ public class LagerService {
 
     public List<Hefe> getHefe() {
         return StreamSupport.stream(hefeRepository.findAll().spliterator(), false)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public Float getWertHefe() {
@@ -41,7 +42,7 @@ public class LagerService {
 
     public List<Hopfen> getHopfen() {
         return StreamSupport.stream(hopfenRepository.findAll().spliterator(), false)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public Float getWertHopfen() {
@@ -51,7 +52,7 @@ public class LagerService {
 
     public List<Malz> getMalz() {
         return StreamSupport.stream(malzRepository.findAll().spliterator(), false)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public Float getWertMalz() {
@@ -61,12 +62,12 @@ public class LagerService {
 
     public List<WeitereZutaten> getWeitereZutaten() {
         return StreamSupport.stream(weitereZutatenRepository.findAll().spliterator(), false)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public Float getWertWeitereZutaten() throws IllegalArgumentException {
         List<WeitereZutaten> retrievedItems = StreamSupport.stream(weitereZutatenRepository.findAll().spliterator(), false)
-                .toList();
+                .collect(Collectors.toList());
         if (retrievedItems.isEmpty()) {
             return 0.0f;
         }
