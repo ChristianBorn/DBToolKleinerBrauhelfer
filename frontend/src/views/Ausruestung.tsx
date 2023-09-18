@@ -42,6 +42,7 @@ function Ausruestung() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+
                     {ausruestung ? ausruestung.map((ausruestung) => (
                         <TableRow key={ausruestung.id}>
                             <TableCell>{ausruestung.id}</TableCell>
@@ -49,7 +50,8 @@ function Ausruestung() {
                             <TableCell>{ausruestung.typ}</TableCell>
                             <TableCell>{ausruestung.sudhausausbeute}</TableCell>
                         </TableRow>
-                    )) : "Keine Ausrüstung gefunden"}
+                    )) : <TableRow><TableCell>Keine Ausrüstung gefunden</TableCell></TableRow>}
+
                 </TableBody>
             </Table>
             <Title>Geräte</Title>
@@ -58,7 +60,7 @@ function Ausruestung() {
                     <TableRow>
                         <TableCell>ID</TableCell>
                         <TableCell>Bezeichnung</TableCell>
-                        <TableCell >Teil von Anlage</TableCell>
+                        <TableCell>Teil von Anlage</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -68,7 +70,7 @@ function Ausruestung() {
                             <TableCell>{geraet.bezeichnung}</TableCell>
                             <TableCell>{geraet.ausruestungAnlagenId.name}</TableCell>
                         </TableRow>
-                    )) : "Keine Geraete gefunden"}
+                    )) : <TableRow><TableCell>Keine Geräte gefunden</TableCell></TableRow>}
                 </TableBody>
             </Table>
 
