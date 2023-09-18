@@ -19,7 +19,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Routing from "./dashboard/Routing";
+import Routing from "./Routing";
 
 const drawerWidth: number = 240;
 
