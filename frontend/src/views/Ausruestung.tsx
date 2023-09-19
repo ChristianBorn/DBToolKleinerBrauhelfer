@@ -31,7 +31,6 @@ function Ausruestung() {
             <TableComponent title={"Ausrüstung"} objectsToDisplay={ausruestung}></TableComponent>
             <TableComponent title={"Geräte"} objectsToDisplay={geraete}></TableComponent>
         </React.Fragment>
-
     );
 }
 
