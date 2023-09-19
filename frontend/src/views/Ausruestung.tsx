@@ -1,18 +1,15 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import axios from "axios";
 
-import Title from "../dashboard/Title";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import {GeraetModel} from "../models/GeraetModel";
 import {AusruestungModel} from "../models/AusruestungModel";
+import TableComponent from "../components/TableComponent";
 
 function Ausruestung() {
-    const [geraete, setGeraete] = useState<GeraetModel[]>()
-    const [ausruestung, setAusruestung] = useState<AusruestungModel[]>()
+    const [geraete, setGeraete] = useState<GeraetModel[]>([{id: -1, bezeichnung: "", ausruestungAnlagenId:
+            {id: -1, name: "", typ: -1, sudhausausbeute: -1}}
+    ])
+    const [ausruestung, setAusruestung] = useState<AusruestungModel[]>([{id: -1, name: "", typ: -1, sudhausausbeute: -1}])
     const getGerate = useCallback(() => {
         axios.get("/geraete")
             .then((response) => response.data)
@@ -28,52 +25,11 @@ function Ausruestung() {
     useEffect(() => {
         getGerate()
         getAusruestung()
-    }, [])
+    },[getGerate, getAusruestung])
     return (
         <React.Fragment>
-            <Title>Ausrüstung</Title>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Typ</TableCell>
-                        <TableCell>Durschnittliche Sudhausausbeute</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-
-                    {ausruestung ? ausruestung.map((ausruestung) => (
-                        <TableRow key={ausruestung.id}>
-                            <TableCell>{ausruestung.id}</TableCell>
-                            <TableCell>{ausruestung.name}</TableCell>
-                            <TableCell>{ausruestung.typ}</TableCell>
-                            <TableCell>{ausruestung.sudhausausbeute}</TableCell>
-                        </TableRow>
-                    )) : <TableRow><TableCell>Keine Ausrüstung gefunden</TableCell></TableRow>}
-
-                </TableBody>
-            </Table>
-            <Title>Geräte</Title>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Bezeichnung</TableCell>
-                        <TableCell>Teil von Anlage</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {geraete ? geraete.map((geraet) => (
-                        <TableRow key={geraet.id}>
-                            <TableCell>{geraet.id}</TableCell>
-                            <TableCell>{geraet.bezeichnung}</TableCell>
-                            <TableCell>{geraet.ausruestungAnlagenId.name}</TableCell>
-                        </TableRow>
-                    )) : <TableRow><TableCell>Keine Geräte gefunden</TableCell></TableRow>}
-                </TableBody>
-            </Table>
-
+            <TableComponent title={"Ausrüstung"} objectsToDisplay={ausruestung}></TableComponent>
+            <TableComponent title={"Geräte"} objectsToDisplay={geraete}></TableComponent>
         </React.Fragment>
 
     );
