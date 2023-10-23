@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Table from '@mui/material/Table';
 
 type componentProps = {
-    title:string
+    title: string
     objectsToDisplay: {[index:string]: any}[]
 }
 function TableComponent(props: componentProps) {
@@ -15,11 +15,11 @@ function TableComponent(props: componentProps) {
     return (
         <React.Fragment>
             <Title>{props.title}</Title>
-            <Table size="small">
+            <Table size="medium">
                 <TableHead>
                     <TableRow>
                         {headers.map(header => (
-                            <TableCell align="right">{header.toUpperCase()}</TableCell>
+                            <TableCell align="left">{header.toUpperCase()}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -27,7 +27,7 @@ function TableComponent(props: componentProps) {
                     {props.objectsToDisplay.map((emp, index) => (
                         <TableRow key={index}>
                             {headers.map(header => (
-                                <TableCell align="right">{JSON.stringify(emp[header])}</TableCell>
+                                <TableCell align="left">{JSON.stringify(emp[header])}</TableCell>
                             ))}
                         </TableRow>
                     ))}

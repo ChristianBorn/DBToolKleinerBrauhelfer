@@ -26,11 +26,11 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Ausrüstung" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={Link} href={"/gebinde"}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Gebinde" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
