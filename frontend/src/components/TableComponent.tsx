@@ -17,9 +17,9 @@ function TableComponent(props: componentProps) {
             <Title>{props.title}</Title>
             <Table size="medium">
                 <TableHead>
-                    <TableRow>
+                    <TableRow key={"head"}>
                         {headers.map(header => (
-                            <TableCell align="left">{header.toUpperCase()}</TableCell>
+                            <TableCell key={header} align="left">{header.toUpperCase()}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -27,7 +27,7 @@ function TableComponent(props: componentProps) {
                     {props.objectsToDisplay.map((emp, index) => (
                         <TableRow key={index}>
                             {headers.map(header => (
-                                <TableCell align="left">{JSON.stringify(emp[header])}</TableCell>
+                                <TableCell key={Math.random()} align="left">{JSON.stringify(emp[header]).replaceAll("\"", "")}</TableCell>
                             ))}
                         </TableRow>
                     ))}

@@ -20,6 +20,7 @@ import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Routing from "./Routing";
+import { Container, Grid, Link } from '@mui/material';
 
 const drawerWidth: number = 240;
 
@@ -70,6 +71,18 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         },
     }),
 );
+function Copyright(props: any) {
+    return (
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+            {'Copyright © '}
+            <Link color="inherit" href="https://mui.com/">
+                Your Website
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
 function App() {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = useCallback(() => {
@@ -149,7 +162,15 @@ function App() {
                     }}
                 >
                     <Toolbar />
-                    <Routing/>
+                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                        <Grid container spacing={3}>
+                            <Routing/>
+                        </Grid>
+                    <Copyright sx={{ pt: 4 }} />
+
+                    </Container>
+
+
                 </Box>
             </Box>
 

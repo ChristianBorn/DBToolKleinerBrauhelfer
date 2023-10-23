@@ -2,29 +2,13 @@ import React from 'react';
 import Chart from "../dashboard/Chart";
 import Deposits from "../dashboard/Deposits";
 import Orders from "../dashboard/Orders";
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 function Start() {
     return (
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
+        <>
                 {/* Chart */}
                 <Grid item xs={12} md={8} lg={9}>
                     <Paper
@@ -57,9 +41,8 @@ function Start() {
                         <Orders />
                     </Paper>
                 </Grid>
-            </Grid>
-            <Copyright sx={{ pt: 4 }} />
-        </Container>
+
+        </>
     );
 }
 
