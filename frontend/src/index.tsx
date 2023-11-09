@@ -2,13 +2,43 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import Start from "./views/Start";
+import Ausruestung from "./views/Ausruestung";
+import Gebinde from "./views/Gebinde";
+import AusruestungLoader from "./loaders/AusruestungLoader";
+
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <App />,
+        children: [
+            {
+                path: 'start',
+                element: <Start/>
+            },
+            {
+                path: 'ausruestung',
+                element: <Ausruestung/>,
+                loader: AusruestungLoader,
+            },
+            {
+                path: 'gebinde',
+                element: <Gebinde/>
+            },
+        ]
+    }
+])
+
 root.render(
     <React.StrictMode>
-        <App/>
+        <RouterProvider router={router}/>
+        {/*<App/>*/}
     </React.StrictMode>
 );
 

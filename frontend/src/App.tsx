@@ -19,8 +19,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {createTheme, styled, ThemeProvider} from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
-import Routing from "./Routing";
 import {Container, Grid, Link} from '@mui/material';
+import {Outlet} from "react-router-dom";
 
 const drawerWidth: number = 240;
 
@@ -166,7 +166,7 @@ function App() {
                         <Toolbar/>
                         <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                             <Grid container spacing={3}>
-                                <Routing/>
+                                <Outlet/>
                             </Grid>
                             <Copyright sx={{pt: 4}}/>
 
