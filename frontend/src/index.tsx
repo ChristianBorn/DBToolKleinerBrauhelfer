@@ -7,6 +7,7 @@ import Start from "./views/Start";
 import Ausruestung from "./views/Ausruestung";
 import Gebinde from "./views/Gebinde";
 import AusruestungLoader from "./loaders/AusruestungLoader";
+import GebindeLoader from "./loaders/GebindeLoader";
 
 
 const root = ReactDOM.createRoot(
@@ -29,7 +30,8 @@ const router = createBrowserRouter([
             },
             {
                 path: 'gebinde',
-                element: <Gebinde/>
+                element: <Gebinde/>,
+                loader: GebindeLoader,
             },
         ]
     }
