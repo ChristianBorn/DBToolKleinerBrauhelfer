@@ -6,8 +6,7 @@ import {AusruestungPageData} from "../models/types";
 
 function Ausruestung() {
     const pageData = useLoaderData() as AusruestungPageData;
-    const geraete = pageData.geraete;
-    const ausruestung = pageData.ausruestung;
+    const {geraete, ausruestung} = pageData;
 
     return (
         <React.Fragment>
