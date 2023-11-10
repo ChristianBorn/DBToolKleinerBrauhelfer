@@ -21,9 +21,14 @@ function Gebinde() {
             <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                 <TableComponent title={"Freie Kapazitäten"} objectsToDisplay={kapazitaeten}></TableComponent>
                 <TableComponent title={"Gebinde im Lager"} objectsToDisplay={gebinde}></TableComponent>
-                <Modal onClose={toggleDialog} isOpen={dialogIsOpen}/>
+                <Modal selectItems={gebinde.filter((singleGebinde) => {
+                    return singleGebinde["status"] === 'leer';
+                    })}
+                       onClose={toggleDialog}
+                       isOpen={dialogIsOpen}
+                />
                 <Button variant="outlined" onClick={toggleDialog}>
-                    Open form dialog
+                    Gebinde füllen
                 </Button>
             </Container>
         </React.Fragment>
