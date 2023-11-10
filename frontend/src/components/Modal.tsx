@@ -6,9 +6,10 @@ import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import DialogTitle from '@mui/material/DialogTitle';
-import {FormEvent, ChangeEvent, useState} from "react";
-import { SelectChangeEvent, FormGroup } from "@mui/material";
+import {ChangeEvent, FormEvent, useState} from "react";
+import {FormGroup, SelectChangeEvent} from "@mui/material";
 import {GebindeModel} from "../models/GebindeModel";
+import axios from 'axios'
 
 
 type ModalProps = {
@@ -17,6 +18,7 @@ type ModalProps = {
     selectItems?: GebindeModel[]
 }
 export default function Modal(props: ModalProps) {
+    //TODO: Implement as action in router
     const [numGebinde, setNumGebinde] = useState(0);
     const [nameGebinde, setNameGebinde] = useState('');
     function handleNumGebinde(event: ChangeEvent<HTMLInputElement>) {
@@ -27,8 +29,9 @@ export default function Modal(props: ModalProps) {
     }
     function handleSubmit(event: FormEvent) {
         event.preventDefault();
-        const postUrl = `http://localhost:8080/gebinde/fill?name=${nameGebinde}&number=${numGebinde}`
-        console.log(postUrl);
+        const putUrl = `gebinde/fill?name=${nameGebinde}&number=${numGebinde}`;
+        axios.put(putUrl);
+        props.onClose();
     }
     return (
         <>
@@ -39,6 +42,7 @@ export default function Modal(props: ModalProps) {
                             <FormControl fullWidth>
                                 <FormGroup>
                                     <Select
+                                        required
                                         onChange={handleNameGebinde}
                                         displayEmpty
                                         value={nameGebinde}
@@ -55,7 +59,7 @@ export default function Modal(props: ModalProps) {
                                 </FormControl>
                                 <FormControl fullWidth>
                                     <FormGroup>
-                                        <Input onChange={handleNumGebinde} placeholder='Anzahl zu füllender Gebinde' sx={{mt:2}} type={'number'} id="num-gebinde" name='num-gebinde' />
+                                        <Input required onChange={handleNumGebinde} placeholder='Anzahl zu füllender Gebinde' sx={{mt:2}} type={'number'} id="num-gebinde" name='num-gebinde' />
                                     </FormGroup>
                                 </FormControl>
                                     <Button sx={{mt: 4}} variant="outlined" onClick={props.onClose}>
