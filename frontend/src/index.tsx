@@ -8,6 +8,7 @@ import Ausruestung from "./views/Ausruestung";
 import Gebinde from "./views/Gebinde";
 import AusruestungLoader from "./loaders/AusruestungLoader";
 import GebindeLoader from "./loaders/GebindeLoader";
+import GebindeAction from "./actions/GebindeAction";
 
 
 const root = ReactDOM.createRoot(
@@ -32,6 +33,8 @@ const router = createBrowserRouter([
                 path: 'gebinde',
                 element: <Gebinde/>,
                 loader: GebindeLoader,
+                action: GebindeAction,
+                errorElement: <Gebinde/>
             },
         ]
     }

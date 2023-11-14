@@ -12,3 +12,14 @@ export type GebindePageData = {
     gebinde: GebindeModel[],
     kapazitaeten: Kapazitaet[],
 }
+
+export type GebindeFormData = {
+    name: string,
+    number: number
+}
+
+export type Message = {
+    messageText: string,
+    data?: Object,
+    status: 'success' | 'info' | 'warning' | 'error'
+}
