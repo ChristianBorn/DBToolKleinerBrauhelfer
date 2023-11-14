@@ -8,11 +8,12 @@ import {FormGroup, SelectChangeEvent} from "@mui/material";
 import {GebindeModel} from "../models/GebindeModel";
 import {Form} from "react-router-dom";
 import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+
 
 type FormProps = {
 
     selectItems?: GebindeModel[],
-    onClose: () => void,
     actiontype: string
 
 }
@@ -29,44 +30,50 @@ export default function GebindeStatusForm(props: FormProps) {
     }
     return (
         <>
-            <Form method="put">
-                <FormControl fullWidth>
-                    <FormGroup>
-                        <Select
-                            required
-                            name="name-gebinde"
-                            onChange={handleNameGebinde}
-                            displayEmpty
-                            value={nameGebinde}
-                            inputProps={{ 'aria-label': 'Without label' }}
-                        >
-                            <MenuItem disabled value="">
-                                <em>Gebinde auswählen</em>
-                            </MenuItem>
-                            {props.selectItems?.map((item) => {
-                                return <MenuItem key={item.id} value={item.name}>{item.name}</MenuItem>
-                            })}
-                        </Select>
-                    </FormGroup>
-                </FormControl>
-                <FormControl fullWidth>
-                    <FormGroup>
-                        <Input value={numGebinde} onChange={handleNumGebinde} required
-                               placeholder='Anzahl Gebinde'
-                               sx={{mt:2}}
-                               type={'number'}
-                               id="num-gebinde"
-                               name='num-gebinde' />
-                    </FormGroup>
-                </FormControl>
-                <FormControl sx={{display:"none"}} hidden disabled={true}>
-                    <TextField name="actiontype" value={props.actiontype}/>
-                </FormControl>
-                <Button sx={{mt: 4}} variant="outlined" onClick={props.onClose}>
-                    Abbrechen
-                </Button>
-                <Button type={'submit'} sx={{mt: 4}} variant="outlined">Abschicken</Button>
-            </Form>
+                <Grid sx={{ justifyContent: "center", ml: "auto", overflow: "hidden", width: 1}} container spacing={2}>
+                    <Form style={{display: "flex", flexDirection: "column"}} method="put">
+                        <Grid item>
+                            <FormControl>
+                                <FormGroup>
+                                    <Select
+                                        required
+                                        name="name-gebinde"
+                                        onChange={handleNameGebinde}
+                                        displayEmpty
+                                        value={nameGebinde}
+                                        inputProps={{ 'aria-label': 'Without label' }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            <em>Gebinde auswählen</em>
+                                        </MenuItem>
+                                        {props.selectItems?.map((item) => {
+                                            return <MenuItem key={item.id} value={item.name}>{item.name}</MenuItem>
+                                        })}
+                                    </Select>
+                                </FormGroup>
+                            </FormControl>
+                        </Grid>
+                        <Grid item>
+                            <FormControl >
+                                <FormGroup>
+                                    <Input value={numGebinde} onChange={handleNumGebinde} required
+                                           placeholder='Anzahl Gebinde'
+                                           inputProps={{style: {textAlign: "center"}}}
+                                           sx={{mt:2}}
+                                           type={'number'}
+                                           id="num-gebinde"
+                                           name='num-gebinde' />
+                                </FormGroup>
+                            </FormControl>
+                        </Grid>
+                        <FormControl sx={{display:"none"}} hidden disabled={true}>
+                            <TextField name="actiontype" value={props.actiontype}/>
+                        </FormControl>
+                        <Grid sx={ {mr: "auto", ml: "auto"} } item>
+                            <Button color={"success"} type={'submit'} sx={{mt: 4}} variant="outlined">Abschicken</Button>
+                        </Grid>
+                    </Form>
+                </Grid>
         </>
     )
 }
