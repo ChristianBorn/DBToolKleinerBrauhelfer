@@ -132,7 +132,7 @@ class GebindeIntegrationTest {
                 .andExpect(status()
                         .isOk())
                 .andReturn().getResponse().getContentAsString();
-        assertEquals("OK", result);
+        assertEquals(String.format("Erfolgreich geleert: %d x %s", bodyParamNumber, bodyParamName), result);
     }
 
     @Test

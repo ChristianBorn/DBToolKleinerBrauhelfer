@@ -35,7 +35,7 @@ public class GebindeController {
     @PutMapping("/gebinde/empty")
     public ResponseEntity<String> emptyGebinde(@RequestBody GebindeFormDTO body) throws JpaSystemException {
         gebindeService.emptyGebinde(body);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>(String.format("Erfolgreich geleert: %d x %s", body.getNumber(), body.getName()), HttpStatus.OK);
     }
 
     @GetMapping("/gebinde/kapazität")
