@@ -38,14 +38,24 @@ function Gebinde() {
                        onClose={toggleEmptyDialog}
                        isOpen={emptyDialogIsOpen}
                 />
-                <ButtonGroup>
-                    <Button variant="outlined" onClick={toggleFillDialog}>
-                        Gebinde füllen
-                    </Button>
-                    <Button variant="outlined" onClick={toggleEmptyDialog}>
-                        Gebinde leeren
-                    </Button>
-                </ButtonGroup>
+                <Container sx={{mt: 2, display:"inline-flex"}}>
+                    <ButtonGroup>
+                        <Button variant="outlined" onClick={toggleFillDialog}>
+                            Gebinde füllen
+                        </Button>
+                        <Button variant="outlined" onClick={toggleEmptyDialog}>
+                            Gebinde leeren
+                        </Button>
+                    </ButtonGroup>
+                    <ButtonGroup sx={{ml:"auto"}}>
+                        <Button color={"success"} variant="outlined">
+                            Gebinde anlegen
+                        </Button>
+                        <Button color={"error"} variant="outlined">
+                            Gebinde löschen
+                        </Button>
+                    </ButtonGroup>
+                </Container>
             </Container>
         </React.Fragment>
     );
