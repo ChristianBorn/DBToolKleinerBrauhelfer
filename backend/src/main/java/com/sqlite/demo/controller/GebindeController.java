@@ -3,6 +3,7 @@ package com.sqlite.demo.controller;
 import com.sqlite.demo.model.gebinde.Capacity;
 import com.sqlite.demo.model.gebinde.Gebinde;
 import com.sqlite.demo.model.gebinde.GebindeDTO;
+import com.sqlite.demo.model.gebinde.GebindeFormDTO;
 import com.sqlite.demo.service.GebindeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,14 +27,14 @@ public class GebindeController {
     }
 
     @PutMapping("/gebinde/fill")
-    public ResponseEntity<String> fillGebinde(@RequestParam String name, @RequestParam int number) throws JpaSystemException {
-        gebindeService.fillGebinde(name, number);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+    public ResponseEntity<String> fillGebinde(@RequestBody GebindeFormDTO body) throws JpaSystemException {
+        gebindeService.fillGebinde(body);
+        return new ResponseEntity<>(String.format("Erfolgreich befüllt: %d x %s", body.getNumber(), body.getName()) , HttpStatus.OK);
     }
 
     @PutMapping("/gebinde/empty")
-    public ResponseEntity<String> emptyGebinde(@RequestParam String name, @RequestParam int number) {
-        gebindeService.emptyGebinde(name, number);
+    public ResponseEntity<String> emptyGebinde(@RequestBody GebindeFormDTO body) throws JpaSystemException {
+        gebindeService.emptyGebinde(body);
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 

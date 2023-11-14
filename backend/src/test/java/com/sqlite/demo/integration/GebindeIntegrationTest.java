@@ -30,8 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Rollback
 class GebindeIntegrationTest {
 
-    private final String urlParamName = "Fass";
-    private final int urlParamNumber = 1;
+    private final String bodyParamName = "Fass";
+    private final int bodyParamNumber = 1;
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,22 +73,22 @@ class GebindeIntegrationTest {
     @DirtiesContext
     @Transactional
     void fillGebinde_ExpectSuccess() throws Exception {
-        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + urlParamNumber;
-        System.out.println(requestUrl);
-        String result = mockMvc.perform(put(requestUrl))
+        String requestUrl = "/gebinde/fill";
+        String requestBody = formatBody(bodyParamName, bodyParamNumber);
+        String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isOk())
                 .andReturn().getResponse().getContentAsString();
-        assertEquals("OK", result);
+        assertEquals(String.format("Erfolgreich befüllt: %d x %s", bodyParamNumber, bodyParamName), result);
     }
 
     @Test
     @DirtiesContext
     @Transactional
     void fillGebinde_ExpectException_InvalidNumberParam() throws Exception {
-        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + (urlParamNumber - 1);
-        System.out.println(requestUrl);
-        String result = mockMvc.perform(put(requestUrl))
+        String requestUrl = "/gebinde/fill";
+        String requestBody = formatBody(bodyParamName, bodyParamNumber - 1);
+        String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isBadRequest())
                 .andReturn().getResponse().getContentAsString();
@@ -99,9 +99,9 @@ class GebindeIntegrationTest {
     @DirtiesContext
     @Transactional
     void fillGebinde_ExpectException_InvalidNameParam() throws Exception {
-        String requestUrl = "/gebinde/fill?name=" + (urlParamName + "a") + "&number=" + urlParamNumber;
-        System.out.println(requestUrl);
-        String result = mockMvc.perform(put(requestUrl))
+        String requestUrl = "/gebinde/fill";
+        String requestBody = formatBody(" ", bodyParamNumber);
+        String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isBadRequest())
                 .andReturn().getResponse().getContentAsString();
@@ -112,9 +112,9 @@ class GebindeIntegrationTest {
     @DirtiesContext
     @Transactional
     void fillGebinde_ExpectException_NumberParamTooBig() throws Exception {
-        String requestUrl = "/gebinde/fill?name=" + urlParamName + "&number=" + (urlParamNumber + 100);
-        System.out.println(requestUrl);
-        String result = mockMvc.perform(put(requestUrl))
+        String requestUrl = "/gebinde/fill";
+        String requestBody = formatBody(bodyParamName, bodyParamNumber + 1000);
+        String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isInternalServerError())
                 .andReturn().getResponse().getContentAsString();
@@ -126,9 +126,9 @@ class GebindeIntegrationTest {
     @DirtiesContext
     @Transactional
     void emptyGebinde_ExpectSuccess() throws Exception {
-        String requestUrl = "/gebinde/empty?name=" + urlParamName + "&number=" + urlParamNumber;
-        System.out.println(requestUrl);
-        String result = mockMvc.perform(put(requestUrl))
+        String requestUrl = "/gebinde/empty";
+        String requestBody = formatBody(bodyParamName, bodyParamNumber);
+        String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -139,9 +139,9 @@ class GebindeIntegrationTest {
     @DirtiesContext
     @Transactional
     void emptyGebinde_ExpectException_InvalidNumberParam() throws Exception {
-        String requestUrl = "/gebinde/empty?name=" + urlParamName + "&number=" + (urlParamNumber - 1);
-        System.out.println(requestUrl);
-        String result = mockMvc.perform(put(requestUrl))
+        String requestUrl = "/gebinde/empty";
+        String requestBody = formatBody(bodyParamName, bodyParamNumber - 1);
+        String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isBadRequest())
                 .andReturn().getResponse().getContentAsString();
@@ -152,9 +152,9 @@ class GebindeIntegrationTest {
     @DirtiesContext
     @Transactional
     void emptyGebinde_ExpectException_InvalidNameParam() throws Exception {
-        String requestUrl = "/gebinde/empty?name=" + (urlParamName + "a") + "&number=" + urlParamNumber;
-        System.out.println(requestUrl);
-        String result = mockMvc.perform(put(requestUrl))
+        String requestUrl = "/gebinde/empty";
+        String requestBody = formatBody(" ", bodyParamNumber);
+        String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isBadRequest())
                 .andReturn().getResponse().getContentAsString();
@@ -165,9 +165,9 @@ class GebindeIntegrationTest {
     @DirtiesContext
     @Transactional
     void emptyGebinde_ExpectException_NumberParamTooBig() throws Exception {
-        String requestUrl = "/gebinde/empty?name=" + urlParamName + "&number=" + (urlParamNumber + 100);
-        System.out.println(requestUrl);
-        String result = mockMvc.perform(put(requestUrl))
+        String requestUrl = "/gebinde/empty";
+        String requestBody = formatBody(bodyParamName, bodyParamNumber + 1000);
+        String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
                         .isInternalServerError())
                 .andReturn().getResponse().getContentAsString();
@@ -202,5 +202,9 @@ class GebindeIntegrationTest {
                 .andReturn().getResponse().getContentAsString();
         List<Gebinde> returnedObject = objectMapper.readValue(result, new TypeReference<>() {});
         assertEquals(6, returnedObject.size());
+    }
+
+    String formatBody(String name, int number) {
+        return String.format("{\"name\": \"%s\", \"number\": %d}", name, number);
     }
 }

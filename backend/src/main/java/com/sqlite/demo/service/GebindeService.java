@@ -3,6 +3,7 @@ package com.sqlite.demo.service;
 import com.sqlite.demo.model.gebinde.Capacity;
 import com.sqlite.demo.model.gebinde.Gebinde;
 import com.sqlite.demo.model.gebinde.GebindeDTO;
+import com.sqlite.demo.model.gebinde.GebindeFormDTO;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,10 +50,13 @@ public class GebindeService {
                 .collect(Collectors.toList());
     }
 
-    public void fillGebinde(String gebindeNameToAlter, int numberOfGebindeToFill) throws JpaSystemException, IllegalArgumentException {
+    public void fillGebinde(GebindeFormDTO body) throws JpaSystemException, IllegalArgumentException {
+        int numberOfGebindeToFill = body.getNumber();
+        String gebindeNameToAlter = body.getName();
         if (numberOfGebindeToFill > 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
             gebindeRepository.reduceEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
             gebindeRepository.increaseFullByName(gebindeNameToAlter, numberOfGebindeToFill);
+
         } else if (numberOfGebindeToFill <= 0) {
             throw new IllegalArgumentException("Die Anzahl der zu füllenden Gebinde muss größer 0 sein");
         } else {
@@ -60,7 +64,9 @@ public class GebindeService {
         }
     }
 
-    public void emptyGebinde(String gebindeNameToAlter, int numberOfGebindeToEmpty) throws JpaSystemException, IllegalArgumentException {
+    public void emptyGebinde(GebindeFormDTO body) throws JpaSystemException, IllegalArgumentException {
+        int numberOfGebindeToEmpty = body.getNumber();
+        String gebindeNameToAlter = body.getName();
         if (numberOfGebindeToEmpty > 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
             gebindeRepository.reduceFullByName(gebindeNameToAlter, numberOfGebindeToEmpty);
             gebindeRepository.increaseEmptyByName(gebindeNameToAlter, numberOfGebindeToEmpty);

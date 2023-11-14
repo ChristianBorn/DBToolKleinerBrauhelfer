@@ -1,9 +1,6 @@
 package com.sqlite.demo.service;
 
-import com.sqlite.demo.model.gebinde.Capacity;
-import com.sqlite.demo.model.gebinde.Gebinde;
-import com.sqlite.demo.model.gebinde.GebindeDTO;
-import com.sqlite.demo.model.gebinde.GebindeStatus;
+import com.sqlite.demo.model.gebinde.*;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.orm.jpa.JpaSystemException;
@@ -11,7 +8,8 @@ import org.springframework.orm.jpa.JpaSystemException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
 class GebindeServiceTest {
@@ -77,20 +75,22 @@ class GebindeServiceTest {
 
     @Test
     void fillGebinde_Succesfull() {
-        String gebindeNameToAlter = "test";
-        int numberOfGebindeToFill = 1;
-        when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
-        gebindeService.fillGebinde(gebindeNameToAlter, numberOfGebindeToFill);
+        GebindeFormDTO formData = new GebindeFormDTO("test", 1);
+        String gebindeNameToAlter = formData.getName();
+        int numberOfGebindeToFill = formData.getNumber();
+        when(gebindeRepository.existsByName(formData.getName())).thenReturn(true);
+        gebindeService.fillGebinde(formData);
         verify(gebindeRepository).reduceEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
         verify(gebindeRepository).increaseFullByName(gebindeNameToAlter, numberOfGebindeToFill);
     }
     @Test
     void fillGebinde_numberParamLowerThan0() {
-        String gebindeNameToAlter = "test";
-        int numberOfGebindeToFill = -1;
+        GebindeFormDTO formData = new GebindeFormDTO("test", -1);
+        String gebindeNameToAlter = formData.getName();
+
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
         try {
-            gebindeService.fillGebinde(gebindeNameToAlter, numberOfGebindeToFill);
+            gebindeService.fillGebinde(formData);
             fail();
         } catch (IllegalArgumentException  e) {
             assertEquals("Die Anzahl der zu füllenden Gebinde muss größer 0 sein", e.getMessage());
@@ -98,12 +98,13 @@ class GebindeServiceTest {
     }
     @Test
     void fillGebinde_numberParamExceedsObjectsInDB() {
-        String gebindeNameToAlter = "test";
-        int numberOfGebindeToFill = 10;
+        GebindeFormDTO formData = new GebindeFormDTO("test", 1000);
+        String gebindeNameToAlter = formData.getName();
+        int numberOfGebindeToFill = formData.getNumber();
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
         doThrow(new JpaSystemException(new RuntimeException())).when(gebindeRepository).reduceEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
         try {
-            gebindeService.fillGebinde(gebindeNameToAlter, numberOfGebindeToFill);
+            gebindeService.fillGebinde(formData);
             fail();
         } catch (JpaSystemException  e) {
             assertEquals("nested exception is java.lang.RuntimeException", e.getMessage());
@@ -111,11 +112,12 @@ class GebindeServiceTest {
     }
     @Test
     void fillGebinde_givenNameDoesNotExistInDB() {
-        String gebindeNameToAlter = "test";
-        int numberOfGebindeToFill = 1;
+        GebindeFormDTO formData = new GebindeFormDTO("test", 1);
+        String gebindeNameToAlter = formData.getName();
+
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(false);
         try {
-            gebindeService.fillGebinde(gebindeNameToAlter, numberOfGebindeToFill);
+            gebindeService.fillGebinde(formData);
             fail();
         } catch (IllegalArgumentException  e) {
             assertEquals("Das angegebene Gebinde existiert nicht unter diesem Namen", e.getMessage());
@@ -123,20 +125,21 @@ class GebindeServiceTest {
     }
     @Test
     void emptyGebinde_Succesfull() {
-        String gebindeNameToAlter = "test";
-        int numberOfGebindeToEmpty = 1;
+        GebindeFormDTO formData = new GebindeFormDTO("test", 1);
+        String gebindeNameToAlter = formData.getName();
+        int numberOfGebindeToEmpty = formData.getNumber();
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
-        gebindeService.emptyGebinde(gebindeNameToAlter, numberOfGebindeToEmpty);
+        gebindeService.emptyGebinde(formData);
         verify(gebindeRepository).reduceFullByName(gebindeNameToAlter, numberOfGebindeToEmpty);
         verify(gebindeRepository).increaseEmptyByName(gebindeNameToAlter, numberOfGebindeToEmpty);
     }
     @Test
     void emptyGebinde_numberParamLowerThan0() {
-        String gebindeNameToAlter = "test";
-        int numberOfGebindeToEmpty = -1;
+        GebindeFormDTO formData = new GebindeFormDTO("test", -1);
+        String gebindeNameToAlter = formData.getName();
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
         try {
-            gebindeService.emptyGebinde(gebindeNameToAlter, numberOfGebindeToEmpty);
+            gebindeService.emptyGebinde(formData);
             fail();
         } catch (IllegalArgumentException  e) {
             assertEquals("Die Anzahl der zu leerenden Gebinde muss größer 0 sein", e.getMessage());
@@ -144,12 +147,13 @@ class GebindeServiceTest {
     }
     @Test
     void emptyGebinde_numberParamExceedsObjectsInDB() {
-        String gebindeNameToAlter = "test";
-        int numberOfGebindeToEmpty = 10;
+        GebindeFormDTO formData = new GebindeFormDTO("test", 1);
+        String gebindeNameToAlter = formData.getName();
+        int numberOfGebindeToEmpty = formData.getNumber();
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(true);
         doThrow(new JpaSystemException(new RuntimeException())).when(gebindeRepository).reduceFullByName(gebindeNameToAlter, numberOfGebindeToEmpty);
         try {
-            gebindeService.emptyGebinde(gebindeNameToAlter, numberOfGebindeToEmpty);
+            gebindeService.emptyGebinde(formData);
             fail();
         } catch (JpaSystemException  e) {
             assertEquals("nested exception is java.lang.RuntimeException", e.getMessage());
@@ -157,11 +161,11 @@ class GebindeServiceTest {
     }
     @Test
     void emptyGebinde_givenNameDoesNotExistInDB() {
-        String gebindeNameToAlter = "test";
-        int numberOfGebindeToEmpty = 1;
+        GebindeFormDTO formData = new GebindeFormDTO("test", 1);
+        String gebindeNameToAlter = formData.getName();
         when(gebindeRepository.existsByName(gebindeNameToAlter)).thenReturn(false);
         try {
-            gebindeService.emptyGebinde(gebindeNameToAlter, numberOfGebindeToEmpty);
+            gebindeService.emptyGebinde(formData);
             fail();
         } catch (IllegalArgumentException  e) {
             assertEquals("Das angegebene Gebinde existiert nicht unter diesem Namen", e.getMessage());
