@@ -13,7 +13,6 @@ import java.util.List;
 
 
 @Repository
-
 public interface GebindeRepository extends CrudRepository<Gebinde, Long> {
 
     @Query("SELECT SUM(fassungsvermoegen*anzahl) FROM Gebinde WHERE status = 'leer'")
@@ -56,4 +55,7 @@ public interface GebindeRepository extends CrudRepository<Gebinde, Long> {
     @Query(value = "SELECT name as name, anzahl as anzahl,(fassungsvermoegen*anzahl) as summierteKapazitaet " +
             "FROM Gebinde WHERE status = 'leer' GROUP BY name")
     List<Capacity> getFreeCapacitiesGrouped();
+
+    @Transactional
+    void deleteAllByName(String name);
 }

@@ -2,6 +2,7 @@ package com.sqlite.demo.exception_handling;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(bodyOfResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({NotFoundException.class})
+    private ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
+        return buildResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     private ResponseEntity<Object> buildResponseEntity(String message, HttpStatus status) {
         return new ResponseEntity<>(message, status);
     }
-
 }

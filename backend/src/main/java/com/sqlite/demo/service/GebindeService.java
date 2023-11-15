@@ -5,6 +5,7 @@ import com.sqlite.demo.model.gebinde.Gebinde;
 import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.model.gebinde.GebindeFormDTO;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +51,16 @@ public class GebindeService {
                 .collect(Collectors.toList());
     }
 
-    public void fillGebinde(GebindeFormDTO body) throws JpaSystemException, IllegalArgumentException {
+    public void fillGebinde(GebindeFormDTO body) throws IllegalArgumentException {
         int numberOfGebindeToFill = body.getNumber();
         String gebindeNameToAlter = body.getName();
         if (numberOfGebindeToFill > 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
-            gebindeRepository.reduceEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
-            gebindeRepository.increaseFullByName(gebindeNameToAlter, numberOfGebindeToFill);
-
+            try {
+                gebindeRepository.reduceEmptyByName(gebindeNameToAlter, numberOfGebindeToFill);
+                gebindeRepository.increaseFullByName(gebindeNameToAlter, numberOfGebindeToFill);
+            } catch (JpaSystemException e) {
+                throw new IllegalArgumentException("Menge zu füllender Gebinde ist größer als die Zahl der verfügbaren Gebinde");
+            }
         } else if (numberOfGebindeToFill <= 0) {
             throw new IllegalArgumentException("Die Anzahl der zu füllenden Gebinde muss größer 0 sein");
         } else {
@@ -64,16 +68,27 @@ public class GebindeService {
         }
     }
 
-    public void emptyGebinde(GebindeFormDTO body) throws JpaSystemException, IllegalArgumentException {
+    public void emptyGebinde(GebindeFormDTO body) throws IllegalArgumentException {
         int numberOfGebindeToEmpty = body.getNumber();
         String gebindeNameToAlter = body.getName();
         if (numberOfGebindeToEmpty > 0 && gebindeRepository.existsByName(gebindeNameToAlter)) {
-            gebindeRepository.reduceFullByName(gebindeNameToAlter, numberOfGebindeToEmpty);
-            gebindeRepository.increaseEmptyByName(gebindeNameToAlter, numberOfGebindeToEmpty);
+            try {
+                gebindeRepository.reduceFullByName(gebindeNameToAlter, numberOfGebindeToEmpty);
+                gebindeRepository.increaseEmptyByName(gebindeNameToAlter, numberOfGebindeToEmpty);
+            } catch (JpaSystemException e) {
+                throw new IllegalArgumentException("Menge zu leerender Gebinde ist größer als die Zahl der verfügbaren Gebinde");
+            }
         } else if (numberOfGebindeToEmpty <= 0) {
             throw new IllegalArgumentException("Die Anzahl der zu leerenden Gebinde muss größer 0 sein");
         } else {
             throw new IllegalArgumentException("Das angegebene Gebinde existiert nicht unter diesem Namen");
         }
+    }
+    public void deleteGebinde(String name) throws NotFoundException {
+        if (!gebindeRepository.existsByName(name)) {
+            throw new NotFoundException("Gebinde mit angegebenem Namen existiert nicht");
+        }
+        gebindeRepository.deleteAllByName(name);
+
     }
 }

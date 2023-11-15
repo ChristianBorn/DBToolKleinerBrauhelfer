@@ -5,6 +5,7 @@ import com.sqlite.demo.model.gebinde.Gebinde;
 import com.sqlite.demo.model.gebinde.GebindeDTO;
 import com.sqlite.demo.model.gebinde.GebindeFormDTO;
 import com.sqlite.demo.service.GebindeService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +52,11 @@ public class GebindeController {
     @GetMapping("/gebinde")
     public ResponseEntity<List<Gebinde>> getGebinde() {
         return new ResponseEntity<>(gebindeService.getGebinde(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/gebinde/delete/{name}")
+    public ResponseEntity<String> deleteGebinde(@PathVariable String name) throws NotFoundException {
+        gebindeService.deleteGebinde(name);
+        return new ResponseEntity<>(String.format("Gebinde mit Name \"%s\" gelöscht", name), HttpStatus.NO_CONTENT);
     }
 }
