@@ -6,6 +6,7 @@ import {useLoaderData} from "react-router-dom";
 import Modal from "../components/Modal";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import GebindeStatusForm from "../components/GebindeStatusForm";
 
 
 function Gebinde() {
@@ -13,6 +14,12 @@ function Gebinde() {
     const [emptyDialogIsOpen, setEmptyDialogIsOpen] = useState(false);
     const pageData = useLoaderData() as GebindePageData;
     const {gebinde, kapazitaeten} = pageData;
+    const fillSelectItems = gebinde.filter((singleGebinde) => {
+        return singleGebinde["status"] === 'leer';
+    })
+    const emptySelectItems = gebinde.filter((singleGebinde) => {
+        return singleGebinde["status"] === 'voll';
+    })
 
     function toggleFillDialog() {
         setFillDialogIsOpen(() => !fillDialogIsOpen);
@@ -26,18 +33,18 @@ function Gebinde() {
             <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                 <TableComponent title={"Freie Kapazitäten"} objectsToDisplay={kapazitaeten}></TableComponent>
                 <TableComponent title={"Gebinde im Lager"} objectsToDisplay={gebinde}></TableComponent>
-                <Modal actiontype={"fill"} dialogTitle={"Gebinde befüllen"} selectItems={gebinde.filter((singleGebinde) => {
-                    return singleGebinde["status"] === 'leer';
-                    })}
+                <Modal dialogTitle={"Gebinde befüllen"}
                        onClose={toggleFillDialog}
                        isOpen={fillDialogIsOpen}
-                />
-                <Modal actiontype={"empty"} dialogTitle={"Gebinde leeren"} selectItems={gebinde.filter((singleGebinde) => {
-                    return singleGebinde["status"] === 'voll';
-                })}
+                >
+                    <GebindeStatusForm actiontype={"fill"} selectItems={fillSelectItems}/>
+                </Modal>
+                <Modal dialogTitle={"Gebinde leeren"}
                        onClose={toggleEmptyDialog}
                        isOpen={emptyDialogIsOpen}
-                />
+                >
+                    <GebindeStatusForm actiontype={"empty"} selectItems={emptySelectItems}/>
+                </Modal>
                 <Container sx={{mt: 2, display:"inline-flex"}}>
                     <ButtonGroup>
                         <Button variant="outlined" onClick={toggleFillDialog}>
