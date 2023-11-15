@@ -8,7 +8,8 @@ import Table from '@mui/material/Table';
 
 type componentProps = {
     title: string
-    objectsToDisplay: { [index: string]: any }[]
+    objectsToDisplay: { [index: string]: any }[],
+    hasActionColumn: boolean
 }
 
 function TableComponent(props: componentProps) {
@@ -20,16 +21,24 @@ function TableComponent(props: componentProps) {
                 <TableHead>
                     <TableRow key={"head"}>
                         {headers.map(header => (
-                            <TableCell key={header} align="left">{header.toUpperCase()}</TableCell>
+                            <TableCell key={header} align="left">
+                                {header.toUpperCase()}
+                            </TableCell>
                         ))}
+                        {props.hasActionColumn &&
+                            <TableCell key={"actions"}>
+                                Aktionen
+                            </TableCell>
+                        }
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.objectsToDisplay.map((emp, index) => (
                         <TableRow key={index}>
                             {headers.map(header => (
-                                <TableCell key={Math.random()}
-                                           align="left">{JSON.stringify(emp[header]).replaceAll("\"", "")}</TableCell>
+                                <TableCell key={Math.random()} align="left">
+                                    {JSON.stringify(emp[header]).replaceAll("\"", "")}
+                                </TableCell>
                             ))}
                         </TableRow>
                     ))}

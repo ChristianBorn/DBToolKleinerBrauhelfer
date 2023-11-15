@@ -31,8 +31,8 @@ function Gebinde() {
     return (
         <React.Fragment>
             <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
-                <TableComponent title={"Freie Kapazitäten"} objectsToDisplay={kapazitaeten}></TableComponent>
-                <TableComponent title={"Gebinde im Lager"} objectsToDisplay={gebinde}></TableComponent>
+                <TableComponent hasActionColumn={false} title={"Freie Kapazitäten"} objectsToDisplay={kapazitaeten}></TableComponent>
+                <TableComponent hasActionColumn={true} title={"Gebinde im Lager"} objectsToDisplay={gebinde}></TableComponent>
                 <Modal dialogTitle={"Gebinde befüllen"}
                        onClose={toggleFillDialog}
                        isOpen={fillDialogIsOpen}
