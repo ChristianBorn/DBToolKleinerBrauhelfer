@@ -2,6 +2,7 @@ package com.sqlite.demo.service;
 
 import com.sqlite.demo.model.gebinde.*;
 import com.sqlite.demo.repository.gebinde.GebindeRepository;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.orm.jpa.JpaSystemException;
 
@@ -106,8 +107,8 @@ class GebindeServiceTest {
         try {
             gebindeService.fillGebinde(formData);
             fail();
-        } catch (JpaSystemException  e) {
-            assertEquals("nested exception is java.lang.RuntimeException", e.getMessage());
+        } catch (IllegalArgumentException  e) {
+            assertEquals("Menge zu füllender Gebinde ist größer als die Zahl der verfügbaren Gebinde", e.getMessage());
         }
     }
     @Test
@@ -155,8 +156,8 @@ class GebindeServiceTest {
         try {
             gebindeService.emptyGebinde(formData);
             fail();
-        } catch (JpaSystemException  e) {
-            assertEquals("nested exception is java.lang.RuntimeException", e.getMessage());
+        } catch (IllegalArgumentException  e) {
+            assertEquals("Menge zu leerender Gebinde ist größer als die Zahl der verfügbaren Gebinde", e.getMessage());
         }
     }
     @Test
@@ -169,6 +170,31 @@ class GebindeServiceTest {
             fail();
         } catch (IllegalArgumentException  e) {
             assertEquals("Das angegebene Gebinde existiert nicht unter diesem Namen", e.getMessage());
+        }
+    }
+
+    @Test
+    void deleteGebinde_Success() {
+        String gebindeToDelete = "Test";
+        when(gebindeRepository.existsByName(gebindeToDelete)).thenReturn(true);
+        try {
+            gebindeService.deleteGebinde(gebindeToDelete);
+        } catch (Exception e) {
+            fail();
+        }
+        verify(gebindeRepository).existsByName(gebindeToDelete);
+        verify(gebindeRepository).deleteAllByName(gebindeToDelete);
+    }
+
+    @Test
+    void deleteGebinde_nameDoesNotExistInDB() {
+        String gebindeToDelete = "Test";
+        when(gebindeRepository.existsByName(gebindeToDelete)).thenReturn(false);
+        try {
+            gebindeService.deleteGebinde(gebindeToDelete);
+            fail();
+        } catch (NotFoundException e) {
+            assertEquals("Gebinde mit angegebenem Namen existiert nicht", e.getMessage());
         }
     }
 }

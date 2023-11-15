@@ -19,8 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -116,10 +115,9 @@ class GebindeIntegrationTest {
         String requestBody = formatBody(bodyParamName, bodyParamNumber + 1000);
         String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
-                        .isInternalServerError())
+                        .isBadRequest())
                 .andReturn().getResponse().getContentAsString();
-        assertEquals("Fehler bei Interaktion mit der Datenbank: could not execute statement; " +
-                "nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement", result);
+        assertEquals("Menge zu füllender Gebinde ist größer als die Zahl der verfügbaren Gebinde", result);
     }
 
     @Test
@@ -169,10 +167,9 @@ class GebindeIntegrationTest {
         String requestBody = formatBody(bodyParamName, bodyParamNumber + 1000);
         String result = mockMvc.perform(put(requestUrl).contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status()
-                        .isInternalServerError())
+                        .isBadRequest())
                 .andReturn().getResponse().getContentAsString();
-        assertEquals("Fehler bei Interaktion mit der Datenbank: could not execute statement; " +
-                "nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement", result);
+        assertEquals("Menge zu leerender Gebinde ist größer als die Zahl der verfügbaren Gebinde", result);
     }
 
     @Test
@@ -202,6 +199,27 @@ class GebindeIntegrationTest {
                 .andReturn().getResponse().getContentAsString();
         List<Gebinde> returnedObject = objectMapper.readValue(result, new TypeReference<>() {});
         assertEquals(6, returnedObject.size());
+    }
+
+    @Test
+    @DirtiesContext
+    @Transactional
+    void deleteGebinde() throws Exception {
+        String requestUrl = "/gebinde/delete/" + bodyParamName;
+        String result = mockMvc.perform(delete(requestUrl))
+                .andExpect(status().isNoContent())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals(String.format("Gebinde mit Name \"%s\" gelöscht", bodyParamName), result);
+    }
+    @Test
+    @DirtiesContext
+    @Transactional
+    void deleteGebinde_ExpectException() throws Exception {
+        String requestUrl = "/gebinde/delete/" + "Nonexistent name";
+        String result = mockMvc.perform(delete(requestUrl))
+                .andExpect(status().isNotFound())
+                .andReturn().getResponse().getContentAsString();
+        assertEquals("Gebinde mit angegebenem Namen existiert nicht", result);
     }
 
     String formatBody(String name, int number) {
