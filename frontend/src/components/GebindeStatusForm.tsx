@@ -33,7 +33,7 @@ export default function GebindeStatusForm(props: FormProps) {
                 <Grid sx={{ justifyContent: "center", ml: "auto", overflow: "hidden", width: 1}} container spacing={2}>
                     <Form style={{display: "flex", flexDirection: "column"}} method="put">
                         <Grid item>
-                            <FormControl>
+                            <FormControl sx={{width: 1}}>
                                 <FormGroup>
                                     <Select
                                         required

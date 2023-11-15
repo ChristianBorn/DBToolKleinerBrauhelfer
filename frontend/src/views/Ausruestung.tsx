@@ -10,8 +10,8 @@ function Ausruestung() {
 
     return (
         <React.Fragment>
-            <TableComponent title={"Ausrüstung"} objectsToDisplay={ausruestung}></TableComponent>
-            <TableComponent title={"Geräte"} objectsToDisplay={geraete}></TableComponent>
+            <TableComponent hasActionColumn={false} title={"Ausrüstung"} objectsToDisplay={ausruestung}></TableComponent>
+            <TableComponent hasActionColumn={false} title={"Geräte"} objectsToDisplay={geraete}></TableComponent>
         </React.Fragment>
     );
 }

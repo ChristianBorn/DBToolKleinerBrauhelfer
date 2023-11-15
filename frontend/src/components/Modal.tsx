@@ -1,7 +1,6 @@
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {useActionData} from "react-router-dom";
 import {Message} from "../models/types";
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
@@ -12,18 +11,18 @@ type ModalProps = {
     isOpen: boolean,
     dialogTitle: string,
     onClose: () => void,
+    message?: Message,
 
 }
 export default function Modal(props: PropsWithChildren & ModalProps) {
-    let actionData = useActionData() as Message;
-
+    //Todo: Reset message display on closing the modal and opening a new one
     return (
         <>
             <Dialog onBackdropClick={props.onClose} open={props.isOpen}>
                 <DialogContent sx={ {display: "flex", flexDirection: "column"} }>
-                    <DialogTitle sx={{mb: 2}}>{props.dialogTitle}</DialogTitle>
-                    { actionData &&
-                    <Alert severity={actionData.status}>{actionData.messageText}</Alert>
+                    <DialogTitle sx={{mb: 1}}>{props.dialogTitle}</DialogTitle>
+                    { props.message &&
+                    <Alert sx={{mb: 2}} severity={props.message.status}>{props.message.messageText}</Alert>
                     }
                     {props.children}
                     <Button sx={{mt: 2}} color={"error"} variant="outlined" onClick={props.onClose}>

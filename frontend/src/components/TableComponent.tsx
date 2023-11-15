@@ -5,6 +5,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Table from '@mui/material/Table';
+import Button from '@mui/material/Button';
+
 
 type componentProps = {
     title: string
@@ -40,6 +42,12 @@ function TableComponent(props: componentProps) {
                                     {JSON.stringify(emp[header]).replaceAll("\"", "")}
                                 </TableCell>
                             ))}
+                            {props.hasActionColumn &&
+                                <TableCell>
+                                    <Button color={"info"} variant="outlined">
+                                        Eintrag ändern
+                                    </Button>
+                                </TableCell>}
                         </TableRow>
                     ))}
                 </TableBody>
