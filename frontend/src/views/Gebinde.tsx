@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import TableComponent from "../components/TableComponent";
 import {Container} from '@mui/material';
 import {GebindePageData, Message} from "../models/types";
-import {useLoaderData, useActionData} from "react-router-dom";
+import {useActionData, useLoaderData} from "react-router-dom";
 import Modal from "../components/Modal";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -14,6 +14,7 @@ function Gebinde() {
     const [fillDialogIsOpen, setFillDialogIsOpen] = useState(false);
     const [emptyDialogIsOpen, setEmptyDialogIsOpen] = useState(false);
     const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState(false);
+    const [showMessage, setShowMessage] = useState<boolean>(false);
     // const [showMessage, setShowMessage] = useState(true);
     const pageData = useLoaderData() as GebindePageData;
     const {gebinde, kapazitaeten} = pageData;
@@ -27,13 +28,19 @@ function Gebinde() {
     })
     function toggleDeleteDialog() {
         setDeleteDialogIsOpen(() => !deleteDialogIsOpen);
+        setShowMessage(() => false);
     }
     function toggleFillDialog() {
         setFillDialogIsOpen(() => !fillDialogIsOpen);
+        setShowMessage(() => false);
     }
 
     function toggleEmptyDialog() {
         setEmptyDialogIsOpen(() => !emptyDialogIsOpen);
+        setShowMessage(() => false);
+    }
+    function handleSubmit() {
+        setShowMessage(() => true);
     }
 
     return (
@@ -41,21 +48,21 @@ function Gebinde() {
             <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                 <TableComponent hasActionColumn={false} title={"Freie Kapazitäten"} objectsToDisplay={kapazitaeten}></TableComponent>
                 <TableComponent hasActionColumn={true} title={"Gebinde im Lager"} objectsToDisplay={gebinde}></TableComponent>
-                <Modal message={actionData}
+                <Modal showMessage={showMessage} message={actionData}
                        dialogTitle={"Gebinde befüllen"}
                        onClose={toggleFillDialog}
                        isOpen={fillDialogIsOpen}
                 >
-                    <GebindeStatusForm actiontype={"fill"} selectItems={fillSelectItems}/>
+                    <GebindeStatusForm handleSubmit={handleSubmit} actiontype={"fill"} selectItems={fillSelectItems}/>
                 </Modal>
-                <Modal message={actionData}
+                <Modal showMessage={showMessage} message={actionData}
                        dialogTitle={"Gebinde leeren"}
                        onClose={toggleEmptyDialog}
                        isOpen={emptyDialogIsOpen}
                 >
-                    <GebindeStatusForm actiontype={"empty"} selectItems={emptySelectItems}/>
+                    <GebindeStatusForm handleSubmit={handleSubmit} actiontype={"empty"} selectItems={emptySelectItems}/>
                 </Modal>
-                <Modal dialogTitle={"Gebinde löschen"}
+                <Modal showMessage={showMessage} dialogTitle={"Gebinde löschen"}
                        onClose={toggleDeleteDialog}
                        isOpen={deleteDialogIsOpen}
                 >

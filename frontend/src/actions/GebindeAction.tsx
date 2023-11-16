@@ -3,7 +3,6 @@ import axios from 'axios'
 import {GebindeFormData} from "../models/types";
 
 export default async function GebindeAction(data: ActionFunctionArgs) {
-    //Todo: Switch um URL zu bestimmen
     const formData = await data.request.formData();
     const postData = Object.fromEntries(formData);
     let requestUrl;
@@ -18,7 +17,6 @@ export default async function GebindeAction(data: ActionFunctionArgs) {
         number: +postData["num-gebinde"]
     }
     if (postData["actiontype"].localeCompare("fill") === 0 || postData["actiontype"].localeCompare("empty") === 0) {
-        console.log(postData["actiontype"])
         return await axios
             .put(requestUrl, requestBody)
             .then((response) => {
@@ -38,5 +36,4 @@ export default async function GebindeAction(data: ActionFunctionArgs) {
                 return {messageText: reason.response.data, status: "error"};
             });
     }
-    return {messageText: "", status: ""};
 }

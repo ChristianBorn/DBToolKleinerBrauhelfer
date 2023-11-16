@@ -12,16 +12,16 @@ type ModalProps = {
     dialogTitle: string,
     onClose: () => void,
     message?: Message,
+    showMessage: boolean
 
 }
 export default function Modal(props: PropsWithChildren & ModalProps) {
-    //Todo: Reset message display on closing the modal and opening a new one
     return (
         <>
             <Dialog onBackdropClick={props.onClose} open={props.isOpen}>
                 <DialogContent sx={ {display: "flex", flexDirection: "column"} }>
                     <DialogTitle sx={{mb: 1}}>{props.dialogTitle}</DialogTitle>
-                    { props.message &&
+                    { props.message && props.showMessage &&
                     <Alert sx={{mb: 2}} severity={props.message.status}>{props.message.messageText}</Alert>
                     }
                     {props.children}

@@ -14,7 +14,8 @@ import Grid from '@mui/material/Grid';
 type FormProps = {
 
     selectItems?: GebindeModel[],
-    actiontype: string
+    actiontype: string,
+    handleSubmit: () => void;
 
 }
 export default function GebindeStatusForm(props: FormProps) {
@@ -28,10 +29,12 @@ export default function GebindeStatusForm(props: FormProps) {
     function handleNumGebinde(event: ChangeEvent<HTMLInputElement>) {
         setNumGebinde(+event.target.value);
     }
+
+
     return (
         <>
                 <Grid sx={{ justifyContent: "center", ml: "auto", overflow: "hidden", width: 1}} container spacing={2}>
-                    <Form style={{display: "flex", flexDirection: "column"}} method="put">
+                    <Form onSubmit={props.handleSubmit} style={{display: "flex", flexDirection: "column"}} method="put">
                         <Grid item>
                             <FormControl sx={{width: 1}}>
                                 <FormGroup>
