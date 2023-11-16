@@ -2,7 +2,7 @@ import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FormGroup, SelectChangeEvent} from "@mui/material";
 import {GebindeModel} from "../models/GebindeModel";
 import {Form} from "react-router-dom";
@@ -11,23 +11,25 @@ import Grid from '@mui/material/Grid';
 
 
 type FormProps = {
-    selectItems?: GebindeModel[],
+    selectItems: GebindeModel[],
     actiontype: string,
-    onClose: () => void,
+    handleSubmit: () => void,
 
 }
-export default function GebindeStatusForm(props: FormProps) {
+export default function GebindeDeleteForm(props: FormProps) {
     //Todo: Implement Confirmation window on submit
     const [nameGebinde, setNameGebinde] = useState('');
 
     function handleNameGebinde(event: SelectChangeEvent) {
         setNameGebinde(event.target.value.trim());
     }
+    // Setzt Auswahl im Select beim Submit zurück
+    useEffect(() => setNameGebinde(""), [props.selectItems])
 
     return (
         <>
             <Grid sx={{ justifyContent: "center", ml: "auto", overflow: "hidden", width: 1}} container spacing={2}>
-                <Form style={{display: "flex", flexDirection: "column"}} method="put">
+                <Form onSubmit={props.handleSubmit} style={{display: "flex", flexDirection: "column"}} method="delete">
                     <Grid item>
                         <FormControl sx={{width: 1}}>
                             <FormGroup>

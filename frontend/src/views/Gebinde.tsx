@@ -30,6 +30,7 @@ function Gebinde() {
         setDeleteDialogIsOpen(() => !deleteDialogIsOpen);
         setShowMessage(() => false);
     }
+
     function toggleFillDialog() {
         setFillDialogIsOpen(() => !fillDialogIsOpen);
         setShowMessage(() => false);
@@ -48,25 +49,29 @@ function Gebinde() {
             <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                 <TableComponent hasActionColumn={false} title={"Freie Kapazitäten"} objectsToDisplay={kapazitaeten}></TableComponent>
                 <TableComponent hasActionColumn={true} title={"Gebinde im Lager"} objectsToDisplay={gebinde}></TableComponent>
-                <Modal showMessage={showMessage} message={actionData}
+                <Modal showMessage={showMessage}
+                       message={actionData}
                        dialogTitle={"Gebinde befüllen"}
                        onClose={toggleFillDialog}
                        isOpen={fillDialogIsOpen}
                 >
                     <GebindeStatusForm handleSubmit={handleSubmit} actiontype={"fill"} selectItems={fillSelectItems}/>
                 </Modal>
-                <Modal showMessage={showMessage} message={actionData}
+                <Modal showMessage={showMessage}
+                       message={actionData}
                        dialogTitle={"Gebinde leeren"}
                        onClose={toggleEmptyDialog}
                        isOpen={emptyDialogIsOpen}
                 >
                     <GebindeStatusForm handleSubmit={handleSubmit} actiontype={"empty"} selectItems={emptySelectItems}/>
                 </Modal>
-                <Modal showMessage={showMessage} dialogTitle={"Gebinde löschen"}
+                <Modal showMessage={showMessage}
+                       message={actionData}
+                       dialogTitle={"Gebinde löschen"}
                        onClose={toggleDeleteDialog}
                        isOpen={deleteDialogIsOpen}
                 >
-                    <GebindeDeleteForm onClose={toggleDeleteDialog} selectItems={fillSelectItems} actiontype={"delete"}></GebindeDeleteForm>
+                    <GebindeDeleteForm handleSubmit={handleSubmit} selectItems={fillSelectItems} actiontype={"delete"}></GebindeDeleteForm>
                 </Modal>
                 <Container sx={{mt: 2, display:"inline-flex"}}>
                     <ButtonGroup>
