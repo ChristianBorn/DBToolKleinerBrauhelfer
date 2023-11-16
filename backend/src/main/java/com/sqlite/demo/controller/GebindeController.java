@@ -57,6 +57,6 @@ public class GebindeController {
     @DeleteMapping("/gebinde/delete/{name}")
     public ResponseEntity<String> deleteGebinde(@PathVariable String name) throws NotFoundException {
         gebindeService.deleteGebinde(name);
-        return new ResponseEntity<>(String.format("Gebinde mit Name \"%s\" gelöscht", name), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(String.format("Gebinde mit Name \"%s\" gelöscht", name), HttpStatus.OK);
     }
 }
