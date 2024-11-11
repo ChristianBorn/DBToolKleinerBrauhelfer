@@ -16,6 +16,10 @@ public class SudService {
 
     public List<Sud> getSud() {
         return StreamSupport.stream(sudRepository.findAll().spliterator(), false)
+                .map(sud -> {
+                    if (sud.getAbfuelldatum() == null) sud.setAbgefuellteMenge(0f);
+                    return sud;
+                })
                 .collect(Collectors.toList());
     }
 }

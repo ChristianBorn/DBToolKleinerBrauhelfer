@@ -30,7 +30,6 @@ export default function GebindeStatusForm(props: FormProps) {
         setNumGebinde(+event.target.value);
     }
 
-
     return (
         <>
                 <Grid sx={{ justifyContent: "center", ml: "auto", overflow: "hidden", width: 1}} container spacing={2}>
